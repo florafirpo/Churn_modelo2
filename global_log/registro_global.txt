@@ -16,3 +16,6 @@
 {"fecha": "2025-11-05_13-17-11", "competencia": 1, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": false}
 {"fecha": "2025-11-05_13-17-38", "competencia": 1, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": false}
 {"fecha": "2025-11-05_13-23-18", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_15-01-32", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_15-21-12", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_15-24-12", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}

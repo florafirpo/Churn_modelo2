@@ -6,6 +6,7 @@ import os
 import datetime 
 import logging
 import json
+import gc
 import lightgbm as lgb
 from src.config import *
 from src.loader import cargar_datos
@@ -35,19 +36,23 @@ def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
     logger.info(f"Inicio de ejecucion del flujo : {name}")
 
     ## 0. load datos
-    df=cargar_datos(FILE_INPUT_DATA)
-    print(df.head())
+    df1 = pd.read_csv("datasets/competencia_04_dl.csv")
+    df2 = pd.read_csv("datasets/competencia_01_02_03_dl.csv")
+    df3 = pd.read_csv("datasets/competencia_06_dl.csv")
+    df = pd.concat([df1,df2,df3],axis=0)
+    # Liberar memoria antes de empezar
+    gc.collect()
                                 ## A - AGREGADO DE FEATURES
 
-    ## 1. Contruccion de las columnas
-    columnas=contruccion_cols(df)
-    cols_lag_delta_max_min_regl=columnas[0]
-    cols_ratios=columnas[1]
-    # ## 2. Feature Engineering
-    df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
-    df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
-    df=feature_engineering_ratio(df,cols_ratios)
-    df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
+    # ## 1. Contruccion de las columnas
+    # columnas=contruccion_cols(df)
+    # cols_lag_delta_max_min_regl=columnas[0]
+    # cols_ratios=columnas[1]
+    # # ## 2. Feature Engineering
+    # df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
+    # df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
+    # df=feature_engineering_ratio(df,cols_ratios)
+    # df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
 
 
 # # ----------------------------------------------------------------------------------------------------------

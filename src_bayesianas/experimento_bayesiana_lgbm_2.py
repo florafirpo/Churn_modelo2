@@ -36,12 +36,8 @@ def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
     logger.info(f"Inicio de ejecucion del flujo : {name}")
 
     ## 0. load datos
-    df1 = pd.read_csv("datasets/competencia_04_dl.csv")
-    df2 = pd.read_csv("datasets/competencia_01_02_03_dl.csv")
-    df3 = pd.read_csv("datasets/competencia_06_dl.csv")
-    df = pd.concat([df1,df2,df3],axis=0)
-    # Liberar memoria antes de empezar
-    gc.collect()
+    df=cargar_datos(FILE_INPUT_DATA)
+    print(df.head())
                                 ## A - AGREGADO DE FEATURES
 
     # ## 1. Contruccion de las columnas

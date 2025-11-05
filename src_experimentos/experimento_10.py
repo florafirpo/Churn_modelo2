@@ -61,10 +61,10 @@ def lanzar_experimento(fecha:str ,semillas:list[int],n_experimento:int,proceso_p
     
     # 2. Feature Engineering
     # df = feature_engineering_rank(df,["mcuentas_saldo"])
-    # df=feature_engineering_drop_cols(df,["mcuentas_saldo"])    
-    # df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
-    # df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
-    # df=feature_engineering_ratio(df,cols_ratios)
+    df=feature_engineering_drop_cols(df,["mcuentas_saldo"])    
+    df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
+    df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
+    df=feature_engineering_ratio(df,cols_ratios)
     # df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
 
                                  ## B - ELIMINACION DE FEATURES

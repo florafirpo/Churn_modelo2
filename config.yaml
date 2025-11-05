@@ -1,5 +1,5 @@
-COMPETENCIA: 1
-PROCESO_PPAL: "bayesiana"
+COMPETENCIA: 2
+PROCESO_PPAL: "creacion_target_clase_ternaria"
 # opciones : bayesiana | experimento | prediccion_final | test | analisis_exploratorio | creacion_target_clase_ternaria
 
 configuracion_experimentos:
@@ -74,7 +74,7 @@ configuracion_competencia_1:
   MES_05: 202105
 
 configuracion_competencia_2:
-  FILE_INPUT_DATA: "datasets/competencia_02.csv"
+  FILE_INPUT_DATA: "datasets/competencia_02.csv."
   FILE_INPUT_DATA_CRUDO: "datasets/competencia_02_crudo.csv.gz"
   MES_TRAIN: [202101, 202102, 202103]
   MES_TEST: [202104]

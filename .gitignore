@@ -1,0 +1,9 @@
+datasets/
+/env_bank
+__pycache__/
+logss/
+outputs/
+logs/
+z601_gbtd.ipynb
+old/
+.venv/

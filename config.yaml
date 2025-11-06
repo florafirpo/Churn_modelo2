@@ -1,5 +1,5 @@
 COMPETENCIA: 2
-PROCESO_PPAL: "creacion_target_clase_ternaria"
+PROCESO_PPAL: "bayesiana"
 # opciones : bayesiana | experimento | prediccion_final | test | analisis_exploratorio | creacion_target_clase_ternaria
 
 configuracion_experimentos:
@@ -10,15 +10,15 @@ configuracion_bayesiana:
   UMBRAL: 0.025
   GANANCIA: 780000
   ESTIMULO: 20000
-  N_TRIALS: 35
+  N_TRIALS: 20
   N_BOOSTS: 1000
-  N_FOLDS: 5
+  N_FOLDS: 2
 
 
 configuracion_semilla:
   SEMILLA: 550019
   SEMILLAS: [550007, 550019, 550031, 550033, 550047]
-  N_SEMILLAS: 45
+  N_SEMILLAS: 30
 
 configuracion_gcp:
   IN_GCP: True

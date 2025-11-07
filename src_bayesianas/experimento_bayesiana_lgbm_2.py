@@ -41,13 +41,13 @@ def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
                                 ## A - AGREGADO DE FEATURES
 
     # ## 1. Contruccion de las columnas
-    columnas=contruccion_cols(df)
-    cols_lag_delta_max_min_regl=columnas[0]
-    cols_ratios=columnas[1]
-    # # ## 2. Feature Engineering
-    df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
-    df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
-    df=feature_engineering_ratio(df,cols_ratios)
+    # columnas=contruccion_cols(df)
+    # cols_lag_delta_max_min_regl=columnas[0]
+    # cols_ratios=columnas[1]
+    # # # ## 2. Feature Engineering
+    # df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
+    # df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
+    # df=feature_engineering_ratio(df,cols_ratios)
     # df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
 
 
@@ -55,18 +55,21 @@ def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
     ## 3. Preprocesamiento para entrenamiento
     # split X_train, y_train
     df=conversion_binario(df)
-    X_train, y_train_binaria,y_train_class, w_train, X_test, y_test_binaria, y_test_class, w_test,X_apred, y_apred = split_train_test_apred(df,MES_TRAIN,MES_TEST,MES_A_PREDECIR,semilla,0.4)
- 
+    X_train, y_train_binaria,y_train_class, w_train, X_test, y_test_binaria, y_test_class, w_test,X_apred, y_apred = split_train_test_apred(df,MES_TRAIN,MES_TEST,MES_A_PREDECIR,semilla,0.1)
+     
+    #NUEVO FLOR PARA SACAR CSV. BORRAR DP 
+    train_full = pd.concat([X_train, y_train_binaria, w_train], axis=1)
+    train_full.to_csv("competencia_02_subsample_10.csv", index=False)
 
-    ## 4.a. Optimizacion Hiperparametros
+    # ## 4.a. Optimizacion Hiperparametros
    
-    study = optim_hiperp_binaria(X_train , y_train_binaria,w_train ,n_trials , name)
-    graficos_bayesiana(study , name)
-    best_iter = study.best_trial.user_attrs["best_iter"]
-    best_params = study.best_trial.params
-    logger.info("Best params y best iter cargados")
+    # study = optim_hiperp_binaria(X_train , y_train_binaria,w_train ,n_trials , name)
+    # graficos_bayesiana(study , name)
+    # best_iter = study.best_trial.user_attrs["best_iter"]
+    # best_params = study.best_trial.params
+    # logger.info("Best params y best iter cargados")
 
 
     
-    logger.info(f">>> Ejecucion finalizada. Revisar logs para mas detalles. {nombre_log}")
+    # logger.info(f">>> Ejecucion finalizada. Revisar logs para mas detalles. {nombre_log}")
 

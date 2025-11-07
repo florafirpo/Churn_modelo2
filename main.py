@@ -19,7 +19,7 @@ from src_bayesianas.experimento_bayesiana_xgb_2 import lanzar_bayesiana_xgb
 
 from src_experimentos.experimento_10 import lanzar_experimento
 from src_experimentos.experimento_eda import lanzar_eda
-from src_experimentos.subsampleo import lanzar_subsampleo
+
 
 
 
@@ -64,9 +64,6 @@ def main():
         lanzar_experimento(test,semillas , n_experimento , proceso_ppal)
     elif (proceso_ppal =="experimento") | (proceso_ppal=="prediccion_final"):
         lanzar_experimento(fecha,semillas , n_experimento , proceso_ppal)
-    elif proceso_ppal == "subsampleo": 
-        fraccion = globals().get("FRACCION_SUBSAMPLEO", globals().get("FRACCION_SUBSAMPLE", 0.1))
-        lanzar_subsampleo(df=None, FRACCION_SUBSAMPLEO=fraccion, SEMILLA=SEMILLA) #FRACCION_SUBSAMPLEO en config.yaml
     return
 
 if __name__ =="__main__":

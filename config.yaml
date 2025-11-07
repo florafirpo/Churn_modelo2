@@ -14,9 +14,6 @@ configuracion_bayesiana:
   N_BOOSTS: 1000
   N_FOLDS: 2
 
-configuracion_subsampleo:
-  FRACCION_SUBSAMPLEO: 0.1
-
 configuracion_semilla:
   SEMILLA: 550019
   SEMILLAS: [550007, 550019, 550031, 550033, 550047]

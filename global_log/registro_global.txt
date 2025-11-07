@@ -24,3 +24,4 @@
 {"fecha": "2025-11-05_17-35-24", "competencia": 1, "proceso_ppal": "experimento", "n_experimento": "EDA", "n_semillas": 15, "in_gcp": false}
 {"fecha": "2025-11-06_17-29-20", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": "EDA", "n_semillas": 45, "in_gcp": true}
 {"fecha": "2025-11-06_18-46-02", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}
+{"fecha": "2025-11-07_19-43-15", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}

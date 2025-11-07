@@ -1,6 +1,6 @@
 COMPETENCIA: 2
 PROCESO_PPAL: "bayesiana"
-# opciones : bayesiana | experimento | prediccion_final | test | analisis_exploratorio | creacion_target_clase_ternaria
+# opciones : bayesiana | experimento | prediccion_final | test | analisis_exploratorio | creacion_target_clase_ternaria | subsampleo
 
 configuracion_experimentos:
   N_EXP : EDA
@@ -14,6 +14,8 @@ configuracion_bayesiana:
   N_BOOSTS: 1000
   N_FOLDS: 2
 
+configuracion_subsampleo:
+  FRACCION_SUBSAMPLEO: 0.1
 
 configuracion_semilla:
   SEMILLA: 550019

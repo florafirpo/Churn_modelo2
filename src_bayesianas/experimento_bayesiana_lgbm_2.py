@@ -41,13 +41,13 @@ def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
                                 ## A - AGREGADO DE FEATURES
 
     # ## 1. Contruccion de las columnas
-    # columnas=contruccion_cols(df)
-    # cols_lag_delta_max_min_regl=columnas[0]
-    # cols_ratios=columnas[1]
+    columnas=contruccion_cols(df)
+    cols_lag_delta_max_min_regl=columnas[0]
+    cols_ratios=columnas[1]
     # # ## 2. Feature Engineering
-    # df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
-    # df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
-    # df=feature_engineering_ratio(df,cols_ratios)
+    df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
+    df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
+    df=feature_engineering_ratio(df,cols_ratios)
     # df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
 
 

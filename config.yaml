@@ -5,7 +5,7 @@ COMPETENCIA: 2
 #| prediccion_final | test_prediccion_final |analisis_exploratorio 
 #| creacion_target_clase_ternaria | feat_eng
 PROCESO_PPAL: "experimento"
-SUBSAMPLEO : 0.4
+SUBSAMPLEO : 0.05
 configuracion_experimentos:
   # numero del experimento o EDA
   N_EXP : "1"
@@ -31,7 +31,7 @@ configuracion_bayesiana:
 configuracion_semilla:
  # Completar con la info de las semillas
   SEMILLA: 773767
-  SEMILLAS: [259621, 282917, 413417, 773767, 290827]
+  SEMILLAS: [550007, 550019, 550031, 550033, 550047]
   N_SEMILLAS : 6
 
 
@@ -42,7 +42,7 @@ configuracion_gcp:
 configuracion_paths:
   place_path:
     LOCAL_PATH: ""
-    GCP_PATH: "/home/christian_lombardo14/buckets/b1/"
+    GCP_PATH: "/home/firpoflorencia/buckets/b1/"
   PATH_LOGS: "logs/"
   PATH_LOG_GLOBAL : "global_log/"
 

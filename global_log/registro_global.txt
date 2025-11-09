@@ -12,6 +12,7 @@
 {"fecha": "2025-11-03_13-47-50", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 10, "n_semillas": 15, "in_gcp": true}
 {"fecha": "2025-11-03_14-43-50", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 10, "n_semillas": 15, "in_gcp": true}
 {"fecha": "2025-11-03_16-37-21", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 10, "n_semillas": 15, "in_gcp": true}
+<<<<<<< HEAD
 {"fecha": "2025-11-05_02-32-40", "competencia": 2, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": true}
 {"fecha": "2025-11-05_02-36-23", "competencia": 2, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": true}
 {"fecha": "2025-11-05_02-43-49", "competencia": 2, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": true}
@@ -71,3 +72,18 @@
 {"fecha": "2025-11-08_21-00-19", "competencia": 2, "proceso_ppal": "experimento", "n_experimento": "1", "n_semillas": 6, "in_gcp": true}
 {"fecha": "2025-11-08_21-10-45", "competencia": 2, "proceso_ppal": "experimento", "n_experimento": "1", "n_semillas": 6, "in_gcp": true}
 {"fecha": "2025-11-09_02-12-05", "competencia": 2, "proceso_ppal": "experimento", "n_experimento": "1", "n_semillas": 6, "in_gcp": true}
+=======
+{"fecha": "2025-11-05_13-13-05", "competencia": 1, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": true}
+{"fecha": "2025-11-05_13-17-11", "competencia": 1, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": false}
+{"fecha": "2025-11-05_13-17-38", "competencia": 1, "proceso_ppal": "analisis_exploratorio", "n_experimento": "EDA", "in_gcp": false}
+{"fecha": "2025-11-05_13-23-18", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_15-01-32", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_15-21-12", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_15-24-12", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_16-13-28", "competencia": 1, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_17-28-11", "competencia": 1, "proceso_ppal": "experimento", "n_experimento": "EDA", "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-05_17-35-24", "competencia": 1, "proceso_ppal": "experimento", "n_experimento": "EDA", "n_semillas": 15, "in_gcp": false}
+{"fecha": "2025-11-06_17-29-20", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": "EDA", "n_semillas": 45, "in_gcp": true}
+{"fecha": "2025-11-06_18-46-02", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}
+{"fecha": "2025-11-07_19-43-15", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}
+>>>>>>> f0e81888f3322460b70c4672c52ea0fd8324d6a9

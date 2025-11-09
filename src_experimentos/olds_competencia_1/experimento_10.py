@@ -1,6 +1,5 @@
 #experimento_i.py
 # EXPERIMENTO : Ensamble con lgb y xgb. Es el 8 pero pongo el subsampleo. Eliminaos cprestamos_personales y mprestamos_personales
-import gc
 import numpy as np
 import pandas as pd
 import logging
@@ -48,6 +47,7 @@ def lanzar_experimento(fecha:str ,semillas:list[int],n_experimento:int,proceso_p
     ## 0. load datos
     df=cargar_datos(FILE_INPUT_DATA)
     print(df.head())
+
     
 
                             ## A - AGREGADO DE FEATURES
@@ -61,11 +61,11 @@ def lanzar_experimento(fecha:str ,semillas:list[int],n_experimento:int,proceso_p
     
     # 2. Feature Engineering
     # df = feature_engineering_rank(df,["mcuentas_saldo"])
-    df=feature_engineering_drop_cols(df,["mcuentas_saldo"])    
+    # df=feature_engineering_drop_cols(df,["mcuentas_saldo"])    
     df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
     df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
     df=feature_engineering_ratio(df,cols_ratios)
-    # df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
+    df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
 
                                  ## B - ELIMINACION DE FEATURES
     # 1. Contruccion de las columnas

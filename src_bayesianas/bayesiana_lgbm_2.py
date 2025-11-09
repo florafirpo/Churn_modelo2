@@ -6,7 +6,6 @@ import os
 import datetime 
 import logging
 import json
-import gc
 import lightgbm as lgb
 from src.config import *
 from src.loader import cargar_datos
@@ -27,12 +26,13 @@ logger = logging.getLogger(__name__)
 
 ## --------------------------------------------------------Funcion main ------------------------------------------
 
-def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
+def lanzar_bayesiana_lgbm(fecha:str , semillas:list,n_experimento:str|int ,proceso_ppal:str):
     #"""---------------------- CAMBIAR INPUTS --------------------------------------------------------"""
-    numero="2" 
+    numero=n_experimento
     #"""----------------------------------------------------------------------------------------------"""
-    name=f"bayesiana_{numero}_lgbm_{fecha}"
-    nombre_log=f"log_{name}"
+    # name=f"bayesiana_{numero}_lgbm_{fecha}"
+    name=f"{proceso_ppal}_{numero}_lgbm_{len(semillas)}_SEMILLAS_{N_TRIALS}_TRIALS_{N_BOOSTS}_BOOSTS"
+    nombre_log=f"log_{name}_{fecha}"
     logger.info(f"Inicio de ejecucion del flujo : {name}")
 
     ## 0. load datos
@@ -40,36 +40,39 @@ def lanzar_bayesiana_lgbm(fecha:str , semilla:int ):
     print(df.head())
                                 ## A - AGREGADO DE FEATURES
 
-    # ## 1. Contruccion de las columnas
-    # columnas=contruccion_cols(df)
-    # cols_lag_delta_max_min_regl=columnas[0]
-    # cols_ratios=columnas[1]
-    # # # ## 2. Feature Engineering
-    # df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
-    # df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
-    # df=feature_engineering_ratio(df,cols_ratios)
-    # df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
+    ## 1. Contruccion de las columnas
+    columnas=contruccion_cols(df)
+    cols_lag_delta_max_min_regl=columnas[0]
+    cols_ratios=columnas[1]
+    # ## 2. Feature Engineering
+    df=feature_engineering_lag(df,cols_lag_delta_max_min_regl,2)
+    df=feature_engineering_delta(df,cols_lag_delta_max_min_regl,2)
+    df=feature_engineering_ratio(df,cols_ratios)
+    df=feature_engineering_linreg(df,cols_lag_delta_max_min_regl)
 
 
 # # ----------------------------------------------------------------------------------------------------------
     ## 3. Preprocesamiento para entrenamiento
     # split X_train, y_train
     df=conversion_binario(df)
-    X_train, y_train_binaria,y_train_class, w_train, X_test, y_test_binaria, y_test_class, w_test,X_apred, y_apred = split_train_test_apred(df,MES_TRAIN,MES_TEST,MES_A_PREDECIR,semilla,0.1)
-     
-    #NUEVO FLOR PARA SACAR CSV. BORRAR DP 
-    train_full = pd.concat([X_train, y_train_binaria, w_train], axis=1)
-    train_full.to_csv("competencia_02_subsample_10.csv", index=False)
+    X_train, y_train_binaria,y_train_class, w_train, X_test, y_test_binaria, y_test_class, w_test,X_apred, y_apred = split_train_test_apred(df,MES_TRAIN,MES_TEST,MES_A_PREDECIR,SEMILLA,SUBSAMPLEO)
+ 
 
-    # ## 4.a. Optimizacion Hiperparametros
+    ## 4.a. Optimizacion Hiperparametros
    
-    # study = optim_hiperp_binaria(X_train , y_train_binaria,w_train ,n_trials , name)
-    # graficos_bayesiana(study , name)
-    # best_iter = study.best_trial.user_attrs["best_iter"]
-    # best_params = study.best_trial.params
-    # logger.info("Best params y best iter cargados")
+    study = optim_hiperp_binaria(X_train , y_train_binaria,w_train ,n_trials , name,fecha,semillas)
+    graficos_bayesiana(study ,fecha, name)
+    logger.info("=== ANÁLISIS DE RESULTADOS ===")
+    trials_df = study.trials_dataframe()
+    if len(trials_df) > 0:
+        top_5 = trials_df.nlargest(5, 'value')
+        logger.info("Top 5 mejores trials:")
+        for idx, trial in top_5.iterrows():
+            logger.info(f"  Trial {trial['number']}: {trial['value']:,.0f}")
+  
+    logger.info("=== OPTIMIZACIÓN COMPLETADA ===")
 
 
     
-    # logger.info(f">>> Ejecucion finalizada. Revisar logs para mas detalles. {nombre_log}")
+    logger.info(f">>> Ejecucion finalizada. Revisar logs para mas detalles. {nombre_log}")
 

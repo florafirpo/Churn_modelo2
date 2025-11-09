@@ -1,36 +1,54 @@
 COMPETENCIA: 2
-PROCESO_PPAL: "bayesiana"
-# opciones : bayesiana | experimento | prediccion_final | test | analisis_exploratorio | creacion_target_clase_ternaria | subsampleo
 
+# proceso_ppal : 
+# bayesiana  | test_baye | experimento |  test_exp
+#| prediccion_final | test_prediccion_final |analisis_exploratorio 
+#| creacion_target_clase_ternaria | feat_eng
+PROCESO_PPAL: "experimento"
+SUBSAMPLEO : 0.4
 configuracion_experimentos:
-  N_EXP : EDA
-# opciones : numeros | EDA 
+  # numero del experimento o EDA
+  N_EXP : "1"
+  # top models define los N mejores modelos de cada bayesiana. N=1 nos quedamos con el mejor 
+  TOP_MODELS : 3
+
+configuracion_feat_eng:
+  N_FE : 1
+
 configuracion_bayesiana:
+ # Completar con la info de la bayesiana
   N_BAYESIANA: 2
+  N_SEMILLAS_BAY : 3
   UMBRAL: 0.025
   GANANCIA: 780000
   ESTIMULO: 20000
-  N_TRIALS: 20
+  N_TRIALS: 3
   N_BOOSTS: 1000
-  N_FOLDS: 2
+  N_FOLDS: 5
+  MES_VAL_BAYESIANA: 202103
+
 
 configuracion_semilla:
-  SEMILLA: 550019
-  SEMILLAS: [550007, 550019, 550031, 550033, 550047]
-  N_SEMILLAS: 30
+ # Completar con la info de las semillas
+  SEMILLA: 773767
+  SEMILLAS: [259621, 282917, 413417, 773767, 290827]
+  N_SEMILLAS : 6
+
 
 configuracion_gcp:
+ # Completar con la info de la GCP
   IN_GCP: True
 
 configuracion_paths:
   place_path:
     LOCAL_PATH: ""
-    GCP_PATH: "/home/firpoflorencia/buckets/b1/"
+    GCP_PATH: "/home/christian_lombardo14/buckets/b1/"
   PATH_LOGS: "logs/"
   PATH_LOG_GLOBAL : "global_log/"
 
   path_inputs : 
     PATH_INPUT_DATA : "datasets/"
+    PATH_DATA_BASE_DB : "datasets/base_de_datos.duckdb"
   path_outputs:
     PATH_OUTPUT: "outputs/"
     PATH_OUTPUT_DATA: "outputs/data_outputs/"
@@ -61,7 +79,7 @@ configuracion_paths:
 
 
 configuracion_competencia_1:
-  FILE_INPUT_DATA: "datasets/competencia_01_Continua_escritoasi_fe.csv"
+  FILE_INPUT_DATA: "datasets/competencia_01.csv"
   FILE_INPUT_DATA_CRUDO: "datasets/competencia_01_crudo.csv"
   MES_TRAIN: [202101, 202102, 202103]
   MES_TEST: [202104]
@@ -73,9 +91,9 @@ configuracion_competencia_1:
   MES_05: 202105
 
 configuracion_competencia_2:
-  FILE_INPUT_DATA: "datasets/competencia_02.csv."
+  FILE_INPUT_DATA: "datasets/competencia_02.csv"
   FILE_INPUT_DATA_CRUDO: "datasets/competencia_02_crudo.csv.gz"
-  MES_TRAIN: [201901, 201902, 201903, 201904, 201905, 201906, 201907, 201908, 201909, 201910, 201911, 201912, 202001, 202002, 202003, 202004, 202005, 202006, 202007, 202008, 202009, 202010, 202011, 202012, 202101, 202102, 202103]
+  MES_TRAIN: [202101, 202102, 202103]
   MES_TEST: [202104]
   MES_A_PREDECIR: 202106
   MES_01: 202101

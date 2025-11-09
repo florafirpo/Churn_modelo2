@@ -26,6 +26,7 @@ try:
 
         COMPETENCIA =cfg["COMPETENCIA"]
         PROCESO_PPAL = cfg["PROCESO_PPAL"]
+        SUBSAMPLEO = cfg["SUBSAMPLEO"]
 
 
         if COMPETENCIA == 1:
@@ -34,23 +35,27 @@ try:
             comp      = cfg["configuracion_competencia_2"]
 
         # =================== Optimización LGBM ===================
-        N_BAYESIANA = bayes.get("N_BAYESIANA")
-        UMBRAL      = bayes.get("UMBRAL", 0.025)
-        GANANCIA    = bayes.get("GANANCIA", 780000)
-        ESTIMULO    = bayes.get("ESTIMULO", 20000)
-        N_TRIALS    = bayes.get("N_TRIALS", 35)
-        N_BOOSTS    = bayes.get("N_BOOSTS", 1000)
-        N_FOLDS     = bayes.get("N_FOLDS", 5)
+        N_BAYESIANA         = bayes.get("N_BAYESIANA")
+        N_SEMILLAS_BAY      = bayes.get("N_SEMILLAS_BAY")
+        UMBRAL              = bayes.get("UMBRAL", 0.025)
+        GANANCIA            = bayes.get("GANANCIA", 780000)
+        ESTIMULO            = bayes.get("ESTIMULO", 20000)
+        N_TRIALS            = bayes.get("N_TRIALS", 35)
+        N_BOOSTS            = bayes.get("N_BOOSTS", 1000)
+        N_FOLDS             = bayes.get("N_FOLDS", 5)
+        MES_VAL_BAYESIANA   = bayes.get("MES_VAL_BAYESIANA", 202103) 
 
-        if PROCESO_PPAL =="bayesiana":
+        if PROCESO_PPAL =="bayesiana" or PROCESO_PPAL =="test_baye":
             N_EXPERIMENTO = bayes["N_BAYESIANA"]
         else:
             N_EXPERIMENTO = exp["N_EXP"]
+            TOP_MODELS = exp["TOP_MODELS"]
+
         
 
         # ================= Configuración General =================
-        SEMILLA    = sem.get("SEMILLA", 550019)
-        SEMILLAS   = sem.get("SEMILLAS", [550007, 550019, 550031, 550033, 550047])
+        SEMILLA    = sem.get("SEMILLA", 773767)
+        SEMILLAS   = sem.get("SEMILLAS", [259621, 282917, 413417, 773767, 290827])
         N_SEMILLAS = sem.get("N_SEMILLAS", 49)
         
 
@@ -62,6 +67,7 @@ try:
             PLACE_PATHS = paths["place_path"]["LOCAL_PATH"]
 
         # ================= Rutas de INPUT / LOG ==================
+        PATH_DATA_BASE_DB =  PLACE_PATHS + inp["PATH_DATA_BASE_DB"]
         PATH_INPUT_DATA = PLACE_PATHS + inp["PATH_INPUT_DATA"]
         FILE_INPUT_DATA = PLACE_PATHS + comp["FILE_INPUT_DATA"]
         FILE_INPUT_DATA_CRUDO = PLACE_PATHS + comp["FILE_INPUT_DATA_CRUDO"]

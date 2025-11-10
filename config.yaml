@@ -6,15 +6,15 @@ COMPETENCIA: 1
     # bayesiana  | test_baye 
     # experimento |  test_exp
     # prediccion_final | test_prediccion_final |
-PROCESO_PPAL: "test_exp"
+PROCESO_PPAL: "feat_eng"
 # SUSBAMPLEO EN PORCENTAJE
-SUBSAMPLEO : 0.4
+SUBSAMPLEO : 0.05
 
 
 configuracion_semilla:
  # Completar con la info de las semillas
-  SEMILLA: 773767
-  SEMILLAS: [259621, 282917, 413417, 773767, 290827]
+  SEMILLA: 550019
+  SEMILLAS: [550007, 550019, 550031, 550033, 550047]
 
 configuracion_feat_eng : 
   N_FE : 1
@@ -37,12 +37,12 @@ configuracion_bayesiana:
 
 configuracion_gcp:
  # Completar con la info de la GCP
-  IN_GCP: False
+  IN_GCP: True
 
 configuracion_paths:
   place_path:
     LOCAL_PATH: ""
-    GCP_PATH: "/home/christian_lombardo14/buckets/b1/"
+    GCP_PATH: "/home/firpoflorencia/buckets/b1/"
   PATH_LOGS: "logs/"
   PATH_LOG_GLOBAL : "global_log/"
 

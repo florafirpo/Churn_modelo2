@@ -87,3 +87,4 @@
 {"fecha": "2025-11-06_18-46-02", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}
 {"fecha": "2025-11-07_19-43-15", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}
 >>>>>>> f0e81888f3322460b70c4672c52ea0fd8324d6a9
+{"fecha": "2025-11-09_18-09-06", "competencia": 2, "proceso_ppal": "experimento", "n_experimento": "1", "n_semillas": 6, "in_gcp": true}

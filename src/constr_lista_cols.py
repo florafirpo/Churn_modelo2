@@ -14,7 +14,7 @@ def contruccion_cols(df:pd.DataFrame)->list[list]:
     palabras_features_excluir=["_lag","delta","slope","max_","min_","ratio"]
     columnas_cleaned=[c for c in df.columns if not any(p in c for p in palabras_features_excluir)]
     
-    col_drops=["numero_de_cliente","foto_mes","active_quarter","clase_ternaria","cliente_edad","cliente_antiguedad"
+    col_drops=["numero_de_cliente","foto_mes","active_quarter","clase_ternaria","clase_binaria","clase_peso","cliente_edad","cliente_antiguedad"
            ,"Visa_fultimo_cierre","Visa_fultimo_cierre","Master_fultimo_cierre","Visa_Fvencimiento",
            "Master_Fvencimiento"]
     for c in columnas_cleaned:
@@ -64,5 +64,21 @@ def contrs_cols_dropear_feat_imp(df:pd.DataFrame , file:str , threshold:float)->
 
     return cols_dropear
     
+def get_cols_a_dropear(df: pd.DataFrame, columnas_base: list[str]) -> list[str]:
+    """
+    A partir de columnas base (ej: 'mrentabilidad'), detecta también
+    columnas derivadas como:
+      - mrentabilidad_lag_1, mrentabilidad_lag_2, ...
+      - delta_mrentabilidad
+      - max_mrentabilidad
+      - min_mrentabilidad
+      - slope_mrentabilidad
+    """
+    # patrones que van antes o después del nombre base
+     # ej: delta_mrentabilidad
+
+    cols_a_dropear = list({c for c in df.columns for col_drop in columnas_base if c.startswith(col_drop)})
+    
+    return cols_a_dropear
 
 

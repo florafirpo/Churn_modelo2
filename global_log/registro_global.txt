@@ -92,3 +92,12 @@
 {"fecha": "2025-11-10_21-17-58", "competencia": 1, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
 {"fecha": "2025-11-10_21-49-49", "competencia": 1, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
 {"fecha": "2025-11-10_22-48-40", "competencia": 1, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-11_17-59-41", "competencia": 2, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-11_18-04-29", "competencia": 2, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-11_18-05-43", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-11_18-08-39", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 1, "n_semillas": [], "in_gcp": false}
+{"fecha": "2025-11-11_18-11-57", "competencia": 2, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": false}
+{"fecha": "2025-11-11_18-16-55", "competencia": 2, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": false}
+{"fecha": "2025-11-11_18-17-45", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 1, "n_semillas": [], "in_gcp": false}
+{"fecha": "2025-11-11_18-19-19", "competencia": 2, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 1, "n_semillas": [], "in_gcp": false}
+{"fecha": "2025-11-11_18-20-06", "competencia": 2, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": false}

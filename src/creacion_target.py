@@ -7,7 +7,7 @@ import logging
 logger =logging.getLogger(__name__)
 
 def create_data_base():
-    logger.info(f"Creacion de la base de datos en : {PATH_DATA_BASE_DB}")
+    logger.info(f"Creacion de la base de datos en : {FILE_INPUT_DATA_CRUDO}")
     sql = f"""
     create or replace table df_completo as 
     select *
@@ -27,9 +27,8 @@ def contador_targets():
         from df_completo
         group by foto_mes"""
     conn = duckdb.connect(PATH_DATA_BASE_DB)
-    contador=conn.execute(sql).df()
+    logger.info(conn.execute(sql))
     conn.close()
-    logger.info(f"Contador clase ternaria : {contador}")
     logger.info("Fin control de la cantidad de los targets")
 
 
@@ -68,8 +67,8 @@ def conversion_binario():
     conn.execute(sql_creacion)
     
     sql_contador="""SELECT foto_mes,
-            COUNT(*) FILTER( where clase_peso = 1.00002) as peso_baja_2,
-            COUNT(*) FILTER(where clase_peso = 1.00001) as peso_baja_1,
+            COUNT(*) FILTER( where clase_peso = 1.0002) as peso_baja_2,
+            COUNT(*) FILTER(where clase_peso = 1.0001) as peso_baja_1,
             COUNT(*) FILTER(where clase_peso = 1.0) as peso_continua,
             COUNT(*) FILTER(where clase_binaria =1) as binaria_bajas,
             COUNT(*) FILTER(where clase_binaria =0) as binaria_continua

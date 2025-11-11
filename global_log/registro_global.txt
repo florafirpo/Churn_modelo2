@@ -88,3 +88,7 @@
 {"fecha": "2025-11-07_19-43-15", "competencia": 2, "proceso_ppal": "bayesiana", "n_experimento": 2, "n_semillas": 30, "in_gcp": true}
 >>>>>>> f0e81888f3322460b70c4672c52ea0fd8324d6a9
 {"fecha": "2025-11-09_18-09-06", "competencia": 2, "proceso_ppal": "experimento", "n_experimento": "1", "n_semillas": 6, "in_gcp": true}
+{"fecha": "2025-11-10_21-13-11", "competencia": 1, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-10_21-17-58", "competencia": 1, "proceso_ppal": "creacion_target_clase_ternaria", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-10_21-49-49", "competencia": 1, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}
+{"fecha": "2025-11-10_22-48-40", "competencia": 1, "proceso_ppal": "feat_eng", "n_experimento": 1, "n_semillas": [], "in_gcp": true}

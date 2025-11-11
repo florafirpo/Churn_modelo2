@@ -12,7 +12,7 @@ def copia_tabla_vm_a_buckert():
     # A ELIMINAR
     logger.info("Copia de la tabla df_completo (en otro .duckdb) a df (en PATH_DATA_BASE_DB)")
     conn = duckdb.connect(PATH_DATA_BASE_DB)
-    conn.execute(f"ATTACH '/home/christian_lombardo14/buckets/b1/datasets/base_de_datos.duckdb' AS db_origen;")
+    conn.execute(f"ATTACH '/home/florafirpo/buckets/b1/datasets/base_de_datos.duckdb' AS db_origen;")
     conn.execute("""
         CREATE OR REPLACE TABLE df_completo AS
         SELECT * FROM db_origen.df_completo

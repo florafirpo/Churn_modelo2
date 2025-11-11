@@ -8,6 +8,7 @@ import duckdb
 def creacion_directorios():
     ## Creacion de las carpetas
             #LOGS PATHS
+    os.makedirs(PATH_INPUT_DATA,exist_ok=True)
     os.makedirs(PATH_LOGS,exist_ok=True)
     os.makedirs(PATH_LOG_GLOBAL,exist_ok=True)
             #OUTPUT PATHS
@@ -69,8 +70,8 @@ def creacion_logg_global(fecha:str, competencia:str, proceso_ppal:str, n_experim
     with open(file_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(registro) + "\n")
 
-def creacion_df_small()->pd.DataFrame:
-    sql="SELECT * FROM df_completo LIMIT 1"
+def creacion_df_small(tabla:str="df_completo")->pd.DataFrame:
+    sql=f"SELECT * FROM {tabla} LIMIT 1"
     conn = duckdb.connect(PATH_DATA_BASE_DB)
     df=conn.execute(sql).df()
     conn.close()

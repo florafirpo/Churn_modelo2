@@ -31,7 +31,7 @@ from src.feat_eng_optimized import (
 logger = logging.getLogger(__name__)
 
 
-def lanzar_feat_eng2(fecha: str, n_fe: int, proceso_ppal: str):
+def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     """
     Pipeline principal de Feature Engineering con sistema de checkpoints.
     

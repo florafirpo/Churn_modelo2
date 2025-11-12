@@ -5,7 +5,8 @@ import json
 from src.config import *
 from src.configuracion_inicial import creacion_df_small
 from src.constr_lista_cols import contruccion_cols
-from src.feature_engineering import feature_engineering_lag,feature_engineering_delta,feature_engineering_max_min,feature_engineering_ratio,feature_engineering_linreg,feature_engineering_drop_cols,feature_engineering_rank, feature_engineering_percentil,feature_engineering_drop_meses, suma_de_prod_servs, suma_ganancias_gastos, ratios_ganancia_gastos, cols_conteo_servicios_productos, cols_beneficios_presion_economica
+from src.feature_engineering import feature_engineering_lag,feature_engineering_delta,feature_engineering_max_min,feature_engineering_ratio,feature_engineering_linreg,feature_engineering_drop_cols, feature_engineering_percentil,feature_engineering_drop_meses, suma_de_prod_servs, suma_ganancias_gastos, ratios_ganancia_gastos
+
 ## ---------------------------------------------------------Configuraciones Iniciales -------------------------------
 ## Carga de variables
 

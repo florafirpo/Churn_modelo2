@@ -372,6 +372,7 @@ def suma_de_prod_servs( df:pd.DataFrame,columnas:list  ,prod_serv:str):
     conn.close()
     logger.info(f"Fin de la suma de productos y servicios {prod_serv}")
     return
+
 def suma_ganancias_gastos(df:pd.DataFrame,cols_ganancias:list ,cols_gastos:list):
     logger.info(f"Comienzo de las sumas y ratio ganancias y gastos")
 

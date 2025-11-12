@@ -13,7 +13,7 @@ from src.config import *
 from src.configuracion_inicial import creacion_directorios,creacion_logg_local , creacion_logg_global
 from src.generadora_semillas import create_semilla
 from src.creacion_target import lanzar_creacion_clase_ternaria_binaria_peso
-from src.feature_engineering import lanzar_feat_eng
+from src.feature_engineering import lanzar_feat_eng, cargar_config, obtener_columnas_numericas, generar_sql_sumas   
 from src_bayesianas.bayesiana_lgbm_2 import lanzar_bayesiana_lgbm
 from src_experimentos.experimento_eda import lanzar_eda
 from src_experimentos.experimento_1_lgbm import lanzar_experimento
@@ -79,7 +79,7 @@ def main():
     elif proceso_ppal=="analisis_exploratorio":
         lanzar_eda(competencia=competencia)
     elif proceso_ppal =="feat_eng":
-        lanzar_feat_eng(fecha,n_fe ,proceso_ppal)
+        lanzar_feat_eng()
     elif proceso_ppal =="bayesiana":
         lanzar_bayesiana_lgbm(fecha,semillas,n_bayesiana,proceso_ppal)
         # lanzar_bayesiana_xgb(fecha,semillas,proceso_ppal)

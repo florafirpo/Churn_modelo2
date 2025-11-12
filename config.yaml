@@ -16,9 +16,6 @@ configuracion_general:
   # Columnas que NO queremos laggear (IDs, Targets, etc)
   COLS_NO_LAG: ["numero_de_cliente", "foto_mes", "clase_ternaria", "clase_binaria", "clase_peso"]
 
-
-# ... (resto de tu config de paths y gcp)
-
 configuracion_semilla:
  # Completar con la info de las semillas
   SEMILLA: 550019

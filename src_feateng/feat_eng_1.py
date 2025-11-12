@@ -13,7 +13,7 @@ from src.constr_lista_cols import (
     cols_conteo_servicios_productos, 
     cols_beneficios_presion_economica
 )
-from src.feature_engineering import (
+from src.feat_eng_optimized import (
     CheckpointManager,
     feature_engineering_drop_meses,
     suma_de_prod_servs,

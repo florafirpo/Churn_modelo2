@@ -13,7 +13,7 @@ from src.constr_lista_cols import (
     cols_conteo_servicios_productos, 
     cols_beneficios_presion_economica
 )
-from src.feat_eng_optimized import (
+from src.feature_engineering import (
     CheckpointManager,
     feature_engineering_drop_meses,
     suma_de_prod_servs,
@@ -107,7 +107,7 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("=" * 80)
     
     # Obtener sample actualizado después del drop de meses
-    df_sample_actualizado = creacion_df_small("df_completo")
+    df_sample_actualizado = creacion_df_small()
     dict_prod_serv_actualizado = cols_conteo_servicios_productos(df_sample_actualizado)
     
     for nombre_grupo, cols in dict_prod_serv_actualizado.items():
@@ -126,7 +126,7 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 3: Creando features de ganancias y gastos")
     logger.info("=" * 80)
     
-    df_sample_actualizado = creacion_df_small("df_completo")
+    df_sample_actualizado = creacion_df_small()
     ganancias_gastos_actualizado = cols_beneficios_presion_economica(df_sample_actualizado)
     
     suma_ganancias_gastos(
@@ -146,7 +146,7 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 4: Creando percentiles")
     logger.info("=" * 80)
     
-    df_sample_actualizado = creacion_df_small("df_completo")
+    df_sample_actualizado = creacion_df_small()
     cols_percentil, _, _ = contruccion_cols(df_sample_actualizado)
     
     feature_engineering_percentil(
@@ -164,7 +164,7 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 5: Creando ratios")
     logger.info("=" * 80)
     
-    df_sample_actualizado = creacion_df_small("df_completo")
+    df_sample_actualizado = creacion_df_small()
     _, _, cols_ratios_actualizado = contruccion_cols(df_sample_actualizado)
     
     feature_engineering_ratio(
@@ -182,7 +182,7 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("=" * 80)
     
     # Actualizar lista de columnas después de crear nuevas features
-    df_sample_actualizado = creacion_df_small("df_completo")
+    df_sample_actualizado = creacion_df_small()
     _, cols_lag_delta_actualizado, _ = contruccion_cols(df_sample_actualizado)
     
     logger.info(f"📊 Procesando {len(cols_lag_delta_actualizado)} columnas con ventana={VENTANA}")

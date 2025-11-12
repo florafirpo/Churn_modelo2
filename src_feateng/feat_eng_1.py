@@ -31,12 +31,16 @@ from src.feat_eng_optimized import (
 logger = logging.getLogger(__name__)
 
 
-def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
+def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str, usar_checkpoints: bool = False):
     """
-    Pipeline principal de Feature Engineering con sistema de checkpoints.
+    Pipeline principal de Feature Engineering con sistema de checkpoints OPCIONAL.
     
-    Si el proceso se interrumpe, al reiniciarse recuperará desde el último checkpoint.
-    Cada etapa verifica si ya fue completada antes de ejecutarse.
+    Args:
+        fecha: Fecha del experimento
+        n_fe: Número de feature engineering
+        proceso_ppal: Nombre del proceso principal
+        usar_checkpoints: Si True, guarda checkpoints (más lento pero seguro). 
+                         Si False, no guarda checkpoints (más rápido).
     """
     
     # ============================================
@@ -48,27 +52,29 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info(f"PROCESO PRINCIPAL: {proceso_ppal}")
     logger.info(f"EXPERIMENTO: {name}")
     logger.info(f"Fecha: {fecha}")
+    logger.info(f"Checkpoints: {'ACTIVADOS' if usar_checkpoints else 'DESACTIVADOS (modo rápido)'}")
     logger.info("=" * 80)
     
     inicio_total = datetime.now()
     
-    # Inicializar gestor de checkpoints
-    checkpoint_mgr = CheckpointManager(PATH_OUTPUT_DATA)
+    # Inicializar gestor de checkpoints solo si está activado
+    checkpoint_mgr = CheckpointManager(PATH_OUTPUT_DATA) if usar_checkpoints else None
     
-    # Mostrar checkpoints existentes
-    checkpoints_previos = checkpoint_mgr.listar_checkpoints()
-    if checkpoints_previos:
-        logger.info(f"📋 Checkpoints encontrados: {len(checkpoints_previos)}")
-        for etapa, info in checkpoints_previos.items():
-            logger.info(f"   ✓ {etapa} - {info['timestamp']}")
+    if checkpoint_mgr:
+        checkpoints_previos = checkpoint_mgr.listar_checkpoints()
+        if checkpoints_previos:
+            logger.info(f"📋 Checkpoints encontrados: {len(checkpoints_previos)}")
+    else:
+        logger.info("⚡ Modo rápido: Sin checkpoints")
     
     # ============================================
-    # ANÁLISIS INICIAL DE COLUMNAS
+    # ANÁLISIS INICIAL DE COLUMNAS - UNA SOLA VEZ
     # ============================================
     
-    logger.info("🔍 Analizando estructura de datos...")
+    logger.info("\n🔍 Analizando estructura de datos (una sola vez)...")
     df_sample = creacion_df_small()
     
+    # Extraer TODAS las columnas necesarias en una sola pasada
     columnas = contruccion_cols(df_sample)
     cols_lag_delta_max_min_regl = columnas[0]
     cols_ratios = columnas[1]
@@ -76,9 +82,13 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     dict_prod_serv = cols_conteo_servicios_productos(df_sample)
     ganancias_gastos = cols_beneficios_presion_economica(df_sample)
     
+    # Extraer columnas para percentiles desde el principio
+    cols_percentil = cols_lag_delta_max_min_regl.copy()  # Usar las mismas que lag/delta
+    
     logger.info(f"✓ Columnas lag/delta: {len(cols_lag_delta_max_min_regl)}")
     logger.info(f"✓ Pares de ratios: {len(cols_ratios)}")
     logger.info(f"✓ Grupos prod/serv: {len(dict_prod_serv)}")
+    logger.info(f"✓ Columnas percentiles: {len(cols_percentil)}")
     
     # ============================================
     # ETAPA 1: DROPEO INICIAL DE MESES
@@ -106,13 +116,10 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 2: Creando features de productos y servicios")
     logger.info("=" * 80)
     
-    # Obtener sample actualizado después del drop de meses
-    df_sample_actualizado = creacion_df_small()
-    dict_prod_serv_actualizado = cols_conteo_servicios_productos(df_sample_actualizado)
-    
-    for nombre_grupo, cols in dict_prod_serv_actualizado.items():
+    # Usar las columnas ya extraídas, no volver a leer
+    for nombre_grupo, cols in dict_prod_serv.items():
         suma_de_prod_servs(
-            df_sample_actualizado, 
+            df_sample,  # Pasamos el sample pero solo se usan las columnas
             cols, 
             nombre_grupo,
             checkpoint_mgr
@@ -126,17 +133,14 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 3: Creando features de ganancias y gastos")
     logger.info("=" * 80)
     
-    df_sample_actualizado = creacion_df_small()
-    ganancias_gastos_actualizado = cols_beneficios_presion_economica(df_sample_actualizado)
-    
     suma_ganancias_gastos(
-        df_sample_actualizado,
-        ganancias_gastos_actualizado["ganancias"],
-        ganancias_gastos_actualizado["gastos"],
+        df_sample,
+        ganancias_gastos["ganancias"],
+        ganancias_gastos["gastos"],
         checkpoint_mgr
     )
     
-    ratios_ganancia_gastos(df_sample_actualizado, checkpoint_mgr)
+    ratios_ganancia_gastos(df_sample, checkpoint_mgr)
     
     # ============================================
     # ETAPA 4: PERCENTILES
@@ -146,12 +150,9 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 4: Creando percentiles")
     logger.info("=" * 80)
     
-    df_sample_actualizado = creacion_df_small()
-    cols_percentil, _, _ = contruccion_cols(df_sample_actualizado)
-    
     feature_engineering_percentil(
-        df_sample_actualizado,
-        cols_percentil,
+        df_sample,
+        cols_percentil,  # Usar columnas ya extraídas
         bins=20,
         checkpoint_mgr=checkpoint_mgr
     )
@@ -164,12 +165,9 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 5: Creando ratios")
     logger.info("=" * 80)
     
-    df_sample_actualizado = creacion_df_small()
-    _, _, cols_ratios_actualizado = contruccion_cols(df_sample_actualizado)
-    
     feature_engineering_ratio(
-        df_sample_actualizado,
-        cols_ratios_actualizado,
+        df_sample,
+        cols_ratios,  # Usar columnas ya extraídas
         checkpoint_mgr
     )
     
@@ -180,41 +178,36 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("\n" + "=" * 80)
     logger.info("ETAPA 6: Creando features temporales")
     logger.info("=" * 80)
-    
-    # Actualizar lista de columnas después de crear nuevas features
-    df_sample_actualizado = creacion_df_small()
-    _, cols_lag_delta_actualizado, _ = contruccion_cols(df_sample_actualizado)
-    
-    logger.info(f"📊 Procesando {len(cols_lag_delta_actualizado)} columnas con ventana={VENTANA}")
+    logger.info(f"📊 Procesando {len(cols_lag_delta_max_min_regl)} columnas con ventana={VENTANA}")
     
     # LAGs
     feature_engineering_lag(
-        df_sample_actualizado,
-        cols_lag_delta_actualizado,
+        df_sample,
+        cols_lag_delta_max_min_regl,  # Usar columnas ya extraídas
         VENTANA,
         checkpoint_mgr
     )
     
     # DELTAs (requiere que los lags ya existan)
     feature_engineering_delta(
-        df_sample_actualizado,
-        cols_lag_delta_actualizado,
+        df_sample,
+        cols_lag_delta_max_min_regl,
         VENTANA,
         checkpoint_mgr
     )
     
     # SLOPE (regresión lineal)
     feature_engineering_linreg(
-        df_sample_actualizado,
-        cols_lag_delta_actualizado,
+        df_sample,
+        cols_lag_delta_max_min_regl,
         VENTANA,
         checkpoint_mgr
     )
     
     # MAX y MIN
     feature_engineering_max_min(
-        df_sample_actualizado,
-        cols_lag_delta_actualizado,
+        df_sample,
+        cols_lag_delta_max_min_regl,
         VENTANA,
         checkpoint_mgr
     )
@@ -227,12 +220,10 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info("ETAPA 7: Limpieza final")
     logger.info("=" * 80)
     
-    # Opcional: eliminar columnas específicas
-    # cols_a_dropear = ["mcuentas_saldo"]  # Definir según necesidad
     cols_a_dropear = None
     
     feature_engineering_drop_cols(
-        df_sample_actualizado,
+        df_sample,
         columnas=cols_a_dropear,
         checkpoint_mgr=checkpoint_mgr
     )
@@ -249,8 +240,8 @@ def lanzar_feat_eng(fecha: str, n_fe: int, proceso_ppal: str):
     logger.info(f"Tiempo total: {duracion_total:.2f} segundos ({duracion_total/60:.2f} minutos)")
     logger.info(f"Experimento: {name}")
     
-    # Resumen de checkpoints
-    checkpoints_finales = checkpoint_mgr.listar_checkpoints()
-    logger.info(f"\n📋 Total de etapas completadas: {len(checkpoints_finales)}")
+    if checkpoint_mgr:
+        checkpoints_finales = checkpoint_mgr.listar_checkpoints()
+        logger.info(f"\n📋 Total de etapas completadas: {len(checkpoints_finales)}")
     
     logger.info("=" * 80)

@@ -81,7 +81,7 @@ def get_cols_a_dropear(df: pd.DataFrame, columnas_base: list[str]) -> list[str]:
     
     return cols_a_dropear
 
-def cols_conteo_servicios_productos(df:pd.DataFrame)->Tuple[list,list,list,list,list,list,list,list]:
+def cols_conteo_servicios_productos(df:pd.DataFrame)->tuple[list,list,list,list,list,list,list,list]:
     dict_prod_serv={
     "master_visa_productos" : ["Master_msaldototal","Master_mconsumototal","Master_mpagado","Master_mlimitecompra",
     "Visa_msaldototal","Visa_mconsumototal","Visa_mpagado","Visa_mlimitecompra"],

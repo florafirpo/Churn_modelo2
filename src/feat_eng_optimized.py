@@ -181,10 +181,31 @@ def suma_de_prod_servs(df: pd.DataFrame, columnas: List[str], nombre_feature: st
         logger.warning(f"⚠️ No hay columnas válidas para {nombre_feature}")
         return
     
+    # Filtrar solo columnas numéricas
+    conn = duckdb.connect(PATH_DATA_BASE_DB)
+    cols_info = conn.execute("""
+        SELECT column_name, data_type 
+        FROM information_schema.columns 
+        WHERE table_name = 'df_completo'
+    """).df()
+    conn.close()
+    
+    cols_numericas = cols_info[
+        cols_info['data_type'].str.contains('INT|DOUBLE|FLOAT|DECIMAL|NUMERIC', case=False, na=False)
+    ]['column_name'].tolist()
+    
+    cols_validas_numericas = [col for col in cols_validas if col in cols_numericas]
+    
+    if not cols_validas_numericas:
+        logger.warning(f"⚠️ No hay columnas numéricas válidas para {nombre_feature}")
+        return
+    
+    # Usar COALESCE solo en la suma final, no en las columnas originales
+    # Esto suma ignorando NULLs: si col1=NULL, col2=5, col3=3 → resultado=8
     sql = f"""
         CREATE OR REPLACE TABLE df_completo AS
         SELECT *,
-            {' + '.join([f'COALESCE({col}, 0)' for col in cols_validas])} AS total_{nombre_feature}
+            ({' + '.join([f'COALESCE({col}, 0)' for col in cols_validas_numericas])}) AS total_{nombre_feature}
         FROM df_completo
     """
     
@@ -206,13 +227,34 @@ def suma_ganancias_gastos(df: pd.DataFrame, cols_ganancias: List[str], cols_gast
     ganancias_validas = _validar_columnas(cols_ganancias)
     gastos_validos = _validar_columnas(cols_gastos)
     
+    # Filtrar solo columnas numéricas
+    conn = duckdb.connect(PATH_DATA_BASE_DB)
+    cols_info = conn.execute("""
+        SELECT column_name, data_type 
+        FROM information_schema.columns 
+        WHERE table_name = 'df_completo'
+    """).df()
+    conn.close()
+    
+    cols_numericas = cols_info[
+        cols_info['data_type'].str.contains('INT|DOUBLE|FLOAT|DECIMAL|NUMERIC', case=False, na=False)
+    ]['column_name'].tolist()
+    
+    ganancias_numericas = [col for col in ganancias_validas if col in cols_numericas]
+    gastos_numericos = [col for col in gastos_validos if col in cols_numericas]
+    
+    if not ganancias_numericas or not gastos_numericos:
+        logger.warning("⚠️ No hay suficientes columnas numéricas para ganancias/gastos")
+        return
+    
+    # COALESCE solo en la suma, ignorando NULLs
     sql = f"""
         CREATE OR REPLACE TABLE df_completo AS
         SELECT *,
-            {' + '.join([f'COALESCE({col}, 0)' for col in ganancias_validas])} AS total_ganancias,
-            {' + '.join([f'COALESCE({col}, 0)' for col in gastos_validos])} AS total_gastos,
-            ({' + '.join([f'COALESCE({col}, 0)' for col in ganancias_validas])}) - 
-            ({' + '.join([f'COALESCE({col}, 0)' for col in gastos_validos])}) AS ganancia_neta
+            ({' + '.join([f'COALESCE({col}, 0)' for col in ganancias_numericas])}) AS total_ganancias,
+            ({' + '.join([f'COALESCE({col}, 0)' for col in gastos_numericos])}) AS total_gastos,
+            ({' + '.join([f'COALESCE({col}, 0)' for col in ganancias_numericas])}) - 
+            ({' + '.join([f'COALESCE({col}, 0)' for col in gastos_numericos])}) AS ganancia_neta
         FROM df_completo
     """
     
@@ -234,7 +276,7 @@ def ratios_ganancia_gastos(df: pd.DataFrame, checkpoint_mgr: Optional[Checkpoint
         CREATE OR REPLACE TABLE df_completo AS
         SELECT *,
             CASE 
-                WHEN COALESCE(total_gastos, 0) > 0 
+                WHEN total_gastos != 0 AND total_gastos IS NOT NULL
                 THEN total_ganancias / total_gastos
                 ELSE NULL
             END AS ratio_ganancia_gasto
@@ -302,7 +344,7 @@ def feature_engineering_ratio(df: pd.DataFrame, pares_columnas: List[List[str]],
             col1, col2 = par
             ratio_expressions.append(f"""
                 CASE 
-                    WHEN COALESCE({col2}, 0) != 0 
+                    WHEN {col2} != 0 AND {col2} IS NOT NULL
                     THEN {col1} / {col2}
                     ELSE NULL
                 END AS ratio_{col1}_{col2}

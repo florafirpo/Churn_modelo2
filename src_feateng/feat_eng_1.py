@@ -32,6 +32,10 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
     dict_prod_serv=cols_conteo_servicios_productos(df_completo_chiquito)
     for p_s, cols in dict_prod_serv.items():
         suma_de_prod_servs(df_completo_chiquito,cols,p_s)
+    cols_percentil,_,_=contruccion_cols(df_completo_chiquito)
+    feature_engineering_percentil(df_completo_chiquito ,cols_percentil,bins=20)
+    _,_,cols_ratios = contruccion_cols(df_completo_chiquito)
+    feature_engineering_ratio(df_completo_chiquito,cols_ratios)
     
     # GANANCIAS Y GASTOS
     # ganancias_gastos=cols_beneficios_presion_economica(df_completo_chiquito)
@@ -40,14 +44,14 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
 
 
     # PERCENTIL
-    df_completo_chiquito=creacion_df_small("df_completo") # Para agregar las columnas de las corregidas
-    cols_percentil,_,_=contruccion_cols(df_completo_chiquito)
-    feature_engineering_percentil(df_completo_chiquito ,cols_percentil,bins=20)
+    # df_completo_chiquito=creacion_df_small("df_completo") # Para agregar las columnas de las corregidas
+    # cols_percentil,_,_=contruccion_cols(df_completo_chiquito)
+    # feature_engineering_percentil(df_completo_chiquito ,cols_percentil,bins=20)
 
     # RATIOS
-    df_completo_chiquito=creacion_df_small("df_completo")
-    _,_,cols_ratios = contruccion_cols(df_completo_chiquito)
-    feature_engineering_ratio(df_completo_chiquito,cols_ratios)
+    # df_completo_chiquito=creacion_df_small("df_completo")
+    # _,_,cols_ratios = contruccion_cols(df_completo_chiquito)
+    # feature_engineering_ratio(df_completo_chiquito,cols_ratios)
  
      
     df_completo_chiquito=creacion_df_small("df_completo")

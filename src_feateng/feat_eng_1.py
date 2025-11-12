@@ -18,7 +18,7 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
     logger.info(f"PROCESO PRINCIPAL ---> {proceso_ppal}")
     logger.info(f"Comienzo del experimento : {name}")
     #DROPEO INICIAL DE MESES
-    meses_a_dropear=[202106]
+    meses_a_dropear=[201901, 201902, 201903, 201904, 201905,201906, 201907,201908, 201909, 201910, 201911, 201912, 202001, 202002, 202003, 202004, 202005, 202006 ]
     feature_engineering_drop_meses(meses_a_dropear)
     
 
@@ -34,9 +34,9 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
         suma_de_prod_servs(df_completo_chiquito,cols,p_s)
     
     # GANANCIAS Y GASTOS
-    ganancias_gastos=cols_beneficios_presion_economica(df_completo_chiquito)
-    suma_ganancias_gastos(df_completo_chiquito,ganancias_gastos["ganancias"] , ganancias_gastos["gastos"])
-    ratios_ganancia_gastos(df_completo_chiquito)
+    # ganancias_gastos=cols_beneficios_presion_economica(df_completo_chiquito)
+    # suma_ganancias_gastos(df_completo_chiquito,ganancias_gastos["ganancias"] , ganancias_gastos["gastos"])
+    # ratios_ganancia_gastos(df_completo_chiquito)
 
 
     # PERCENTIL

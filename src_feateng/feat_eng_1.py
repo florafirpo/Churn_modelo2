@@ -40,7 +40,7 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
 
 
     # PERCENTIL
-    # df_completo_chiquito=creacion_df_small("df_completo") # Para agregar las columnas de las corregidas
+    df_completo_chiquito=creacion_df_small("df_completo") # Para agregar las columnas de las corregidas
     cols_percentil,_,_=contruccion_cols(df_completo_chiquito)
     feature_engineering_percentil(df_completo_chiquito ,cols_percentil,bins=20)
 
@@ -54,7 +54,7 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
     _,  cols_lag_delta_max_min_regl  ,   _ = contruccion_cols(df_completo_chiquito)
     feature_engineering_lag(df_completo_chiquito,cols_lag_delta_max_min_regl,VENTANA)
     feature_engineering_delta(df_completo_chiquito,cols_lag_delta_max_min_regl,VENTANA)
-    feature_engineering_linreg(df_completo_chiquito , cols_lag_delta_max_min_regl,VENTANA)
+    #feature_engineering_linreg(df_completo_chiquito , cols_lag_delta_max_min_regl,VENTANA)
     feature_engineering_max_min(df_completo_chiquito,cols_lag_delta_max_min_regl ,VENTANA)
     
     #COPIA DE TABLA df_completo a df

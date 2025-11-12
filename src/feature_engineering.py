@@ -323,3 +323,119 @@ def feature_engineering_max_min_2(df:pd.DataFrame|np.ndarray , columnas:list[str
     logger.info(f"ejecucion max min finalizada. df shape: {df.shape}")
     return df
 
+
+def feature_engineering_percentil(df:pd.DataFrame , columnas:list[str],bins:int=20):
+    logger.info("Comienzo de la transformacion en percentil")
+
+    if any( c.endswith("_percentil") for c in df.columns):
+        logger.info("Ya se realizo percentil")
+        return
+    logger.info("Todavia no se realizo percentil")
+    sql ="""CREATE or REPLACE table df_completo as """
+    sql += f""" select *""" 
+    for c in columnas:
+        if c in df.columns:
+            sql += f""", ntile({bins}) OVER (partition by foto_mes order by {c} ) as {c}_percentil"""
+        else:
+            logger.warning(f"No se encontro la columna {c} en el df")
+    
+    sql += " from df_completo"
+    
+    conn=duckdb.connect(PATH_DATA_BASE_DB)
+    conn.execute(sql)
+    conn.close()
+    logger.info("Finalizacion del feature percentil")
+    return
+
+def suma_de_prod_servs( df:pd.DataFrame,columnas:list  ,prod_serv:str):
+    logger.info(f"Comienzo de la suma de productos y servicios : {prod_serv}")
+
+    nombre_columna = f"suma_de_{prod_serv}"
+
+    if nombre_columna in df.columns:
+        logger.info(f"Ya se realizo la suma para: {prod_serv}")
+        return
+    logger.info("Todavia no se realizo suma de productos y servicios")
+
+
+    sql="create or replace table df_completo as "
+    sql+="select * "
+    for i,c in enumerate(columnas) :
+        if i==0:
+            sql+=f",if(try_cast({c} as double)>0, 1,0)"
+        else:
+            sql+=f"+ if(try_cast({c} as double)>0,1,0)"
+    sql+=f" as {nombre_columna}"
+    sql+=" from df_completo"
+    conn=duckdb.connect(PATH_DATA_BASE_DB)
+    conn.execute(sql)
+    conn.close()
+    logger.info(f"Fin de la suma de productos y servicios {prod_serv}")
+    return
+def suma_ganancias_gastos(df:pd.DataFrame,cols_ganancias:list ,cols_gastos:list):
+    logger.info(f"Comienzo de las sumas y ratio ganancias y gastos")
+
+    nombre_ganancia = "monto_ganancias"
+    nombre_gasto = "monto_gastos"
+
+    if nombre_ganancia in df.columns or nombre_gasto in df.columns:
+        logger.info(f"Ya se realizo la suma de ganancias y gastos")
+        return
+
+    logger.info("Todavia no se realizo las sumas y ratios de ganancias y gastos")
+
+    sql="create or replace table df_completo as "
+    sql+= "select * "
+    for i,c in enumerate(cols_ganancias) :
+        if i==0:
+            sql+=f",try_cast({c} as double)"
+        else:
+            sql+=f"+try_cast({c} as double)"
+    sql+=f" as {nombre_ganancia}"
+
+    for i,c in enumerate(cols_gastos) :
+        if i==0:
+            sql+=f",try_cast({c} as double)"
+        else:
+            sql+=f"+try_cast({c} as double)"
+    sql+=f" as {nombre_gasto}"
+    sql+=" from df_completo"
+    conn=duckdb.connect(PATH_DATA_BASE_DB)
+    conn.execute(sql)
+    conn.close()
+    logger.info(f"Fin de la suma de productos de ganancias y gastos")
+    return
+
+def ratios_ganancia_gastos(df:pd.DataFrame):
+
+    logger.info("Comienzo del ratio ganancia_gasto")
+    if "ganancia_gasto_ratio" in df.columns:
+        logger.info("Ya se realizo el ratio ganancia gasto")
+        return
+    logger.info("Todavia no se realizo el ratio ganancia gasto")
+    sql="create or replace table df_completo as "
+    sql+=" select *"
+    sql+=f", if(monto_gastos is NULL ,NULL,monto_ganancias/(monto_gastos+1)) as ganancia_gasto_ratio "
+    sql+=" from df_completo"
+    conn=duckdb.connect(PATH_DATA_BASE_DB)
+    conn.execute(sql)
+    conn.close()
+    logger.info(f"Fin del ratio de productos de ganancias y gastos")
+    return
+
+def feature_engineering_drop_meses( meses_a_dropear:list ,tabla_origen:str="df",tabla_nueva:str="df"):
+    logger.info(f"Comienzo del dropeo de los meses {meses_a_dropear}")
+    query_meses = f"({meses_a_dropear[0]}"
+    for m in meses_a_dropear[1:]:
+        query_meses+= f", {m}"
+    query_meses+= ")"
+
+    sql = f"create or replace table {tabla_nueva} as "
+    sql += f"""select *
+                from {tabla_origen}
+                where foto_mes not in {query_meses}"""
+    conn=duckdb.connect(PATH_DATA_BASE_DB)
+    conn.execute(sql)
+    conn.close()
+    logger.info(f"Fin del dropeo de los meses {meses_a_dropear}")
+    return

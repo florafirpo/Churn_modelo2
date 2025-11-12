@@ -10,6 +10,14 @@ PROCESO_PPAL: "feat_eng"
 # SUSBAMPLEO EN PORCENTAJE
 SUBSAMPLEO : 0.05
 
+configuracion_general:
+  # Filtrar meses viejos para ahorrar memoria y ruido
+  MES_INICIO_FILTRO: 201910 
+  # Columnas que NO queremos laggear (IDs, Targets, etc)
+  COLS_NO_LAG: ["numero_de_cliente", "foto_mes", "clase_ternaria", "clase_binaria", "clase_peso"]
+
+
+# ... (resto de tu config de paths y gcp)
 
 configuracion_semilla:
  # Completar con la info de las semillas
@@ -17,6 +25,10 @@ configuracion_semilla:
   SEMILLAS: [550007, 550019, 550031, 550033, 550047]
 
 configuracion_feat_eng : 
+  # Orden de lags y deltas (1 y 2)
+  LAG_ORDER: 2
+  # Si activamos sumas de productos
+  HACER_SUMAS: True
   N_FE : 1
   VENTANA: 2
 configuracion_experimentos:

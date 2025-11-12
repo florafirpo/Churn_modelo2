@@ -19,7 +19,7 @@ def lanzar_feat_eng(fecha:str ,n_fe:int , proceso_ppal:str):
     logger.info(f"Comienzo del experimento : {name}")
     #DROPEO INICIAL DE MESES
     meses_a_dropear=[201901, 201902, 201903, 201904, 201905,201906, 201907,201908, 201909, 201910, 201911, 201912, 202001, 202002, 202003, 202004, 202005, 202006 ]
-    feature_engineering_drop_meses(meses_a_dropear)
+    feature_engineering_drop_meses(meses_a_dropear, "df_completo", "df_completo")
     
 
     # CORRECCION DE VARIABLES POR MES POR MEDIA

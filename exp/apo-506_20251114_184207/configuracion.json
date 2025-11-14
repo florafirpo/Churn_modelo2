@@ -1,0 +1,69 @@
+{
+    "metadata": {
+        "experimento": "apo-506",
+        "timestamp": "2025-11-14T18:42:07.877767",
+        "fecha_ejecucion": "2025-11-14 18:42:07"
+    },
+    "negocio": {
+        "costo_estimulo": 20000,
+        "ganancia_acierto": 780000
+    },
+    "dataset": {
+        "path": "~/datasets/competencia_02_crudo.csv.gz"
+    },
+    "periodos": {
+        "train_inicio": 202001,
+        "train_fin": 202102,
+        "test_1": 202104,
+        "test_2": 202106,
+        "final": 202108
+    },
+    "semillas": {
+        "semilla_primigenia": 550007,
+        "semillas_experimento": 1,
+        "semillas_final": 1,
+        "ksemillerio": 1
+    },
+    "feature_engineering": {
+        "qcanaritos": 5,
+        "lags_enabled": true,
+        "lags_orden": [
+            1,
+            2
+        ]
+    },
+    "undersampling": {
+        "enabled": true,
+        "ratio": 0.05
+    },
+    "lightgbm": {
+        "min_data_in_leaf": 20,
+        "learning_rate": 1.0,
+        "gradient_bound": 0.1,
+        "num_leaves": 999,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 5,
+        "max_bin": 31,
+        "num_boost_round": 1000,
+        "early_stopping_rounds": 200
+    },
+    "cortes": [
+        8000,
+        8500,
+        9000,
+        9500,
+        10000,
+        10500,
+        11000,
+        11500,
+        12000,
+        12500,
+        13000,
+        13500,
+        14000,
+        14500,
+        15000
+    ],
+    "apo": 1
+}

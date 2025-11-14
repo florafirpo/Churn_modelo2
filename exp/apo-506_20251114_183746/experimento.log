@@ -1,0 +1,42 @@
+2025-11-14 18:37:46 - __main__ - INFO - Logging configurado. Guardando en: ./exp/apo-506_20251114_183746/experimento.log
+2025-11-14 18:37:46 - __main__ - INFO - ================================================================================
+2025-11-14 18:37:46 - __main__ - INFO - R_to_py: Workflow Completo de 3 Etapas
+2025-11-14 18:37:46 - __main__ - INFO - ================================================================================
+2025-11-14 18:37:46 - __main__ - INFO - Inicio: 2025-11-14 18:37:46
+2025-11-14 18:37:46 - __main__ - INFO - Experimento: apo-506
+2025-11-14 18:37:46 - __main__ - INFO - Ganancia por acierto: $780,000
+2025-11-14 18:37:46 - __main__ - INFO - Costo por estímulo: $20,000
+2025-11-14 18:37:46 - __main__ - INFO - Canaritos: 5
+2025-11-14 18:37:46 - __main__ - INFO - Lags y Deltas: True (órdenes: [1, 2])
+2025-11-14 18:37:46 - __main__ - INFO - Undersampling: True (ratio=0.05)
+2025-11-14 18:37:46 - __main__ - INFO - 
+2025-11-14 18:37:46 - __main__ - INFO - Configuración guardada en: ./exp/apo-506_20251114_183746/configuracion.json
+2025-11-14 18:37:46 - __main__ - INFO - Configuración guardada en: ./exp/apo-506_20251114_183746/configuracion.json
+2025-11-14 18:37:46 - __main__ - INFO - 
+2025-11-14 18:37:46 - __main__ - INFO - ================================================================================
+2025-11-14 18:37:46 - __main__ - INFO - PASO 1: Carga y preprocesamiento
+2025-11-14 18:37:46 - __main__ - INFO - ================================================================================
+2025-11-14 18:37:46 - __main__ - INFO - Cargando dataset desde ~/datasets/competencia_02_crudo.csv.gz...
+2025-11-14 18:39:26 - __main__ - INFO - Dataset cargado: (4717958, 154)
+2025-11-14 18:39:26 - __main__ - INFO - Calculando clase_ternaria...
+2025-11-14 18:39:37 - __main__ - INFO - Distribución de clases por periodo:
+2025-11-14 18:39:37 - __main__ - INFO -   201901: BAJA+1 = 645
+2025-11-14 18:39:37 - __main__ - INFO -   201901: BAJA+2 = 729
+2025-11-14 18:39:37 - __main__ - INFO -   201901: CONTINUA = 122899
+2025-11-14 18:39:37 - __main__ - INFO -   201902: BAJA+1 = 733
+2025-11-14 18:39:37 - __main__ - INFO -   201902: BAJA+2 = 707
+2025-11-14 18:39:37 - __main__ - INFO -   201902: CONTINUA = 123961
+2025-11-14 18:39:37 - __main__ - INFO -   201903: BAJA+1 = 708
+2025-11-14 18:39:37 - __main__ - INFO -   201903: BAJA+2 = 751
+2025-11-14 18:39:37 - __main__ - INFO -   201903: CONTINUA = 124508
+2025-11-14 18:39:37 - __main__ - INFO -   201904: BAJA+1 = 756
+2025-11-14 18:39:37 - __main__ - INFO -   201904: BAJA+2 = 514
+2025-11-14 18:39:37 - __main__ - INFO -   201904: CONTINUA = 125268
+2025-11-14 18:39:37 - __main__ - INFO -   201905: BAJA+1 = 517
+2025-11-14 18:39:37 - __main__ - INFO -   201905: BAJA+2 = 692
+2025-11-14 18:39:37 - __main__ - INFO -   201905: CONTINUA = 125993
+2025-11-14 18:39:37 - __main__ - INFO -   201906: BAJA+1 = 696
+2025-11-14 18:39:37 - __main__ - INFO -   201906: BAJA+2 = 608
+2025-11-14 18:39:37 - __main__ - INFO -   201906: CONTINUA = 127430
+2025-11-14 18:39:37 - __main__ - INFO -   201907: BAJA+1 = 611
+2025-11-14 18:39:37 - __main__ - INFO -   201907: BAJA+2 = 680

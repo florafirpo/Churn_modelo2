@@ -47,7 +47,7 @@ GANANCIA_ACIERTO = 780000
 # Experimento
 # -----------------------------
 EXPERIMENTO = "apo-506"
-SEMILLA_PRIMIGENIA = 102191
+SEMILLA_PRIMIGENIA = 550007
 APO = 1
 KSEMILLERIO = 1
 
@@ -60,7 +60,7 @@ DATASET_PATH = "~/datasets/competencia_02_crudo.csv.gz"
 # Periodos (Estructura de 3 etapas)
 # -----------------------------
 # TRAIN: Todos los meses desde 201901 hasta 202102
-FOTO_MES_TRAIN_INICIO = 201901
+FOTO_MES_TRAIN_INICIO = 202001
 FOTO_MES_TRAIN_FIN = 202102
 
 # TEST: Dos meses de validación
@@ -79,7 +79,7 @@ SEMILLAS_FINAL = 1          # Para predicción final (1 semilla, sin ensamble)
 # -----------------------------
 # Feature Engineering
 # -----------------------------
-QCANARITOS = 5  # Cantidad de variables aleatorias (canaritos) - dejar en 5
+QCANARITOS = 300  # Cantidad de variables aleatorias (canaritos) - dejar en 5
 
 # Lags y Deltas
 FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
@@ -652,6 +652,7 @@ def entrenar_lgbm(X_train, y_train, X_val, y_val, semilla, usar_ganancia=False):
         'verbose': -1,
         'seed': semilla,
         'force_row_wise': True,
+        'canaritos': QCANARITOS,
     }
     
     if GRADIENT_BOUND is not None:
@@ -672,7 +673,7 @@ def entrenar_lgbm(X_train, y_train, X_val, y_val, semilla, usar_ganancia=False):
         valid_sets=[val_data],
         valid_names=['valid'],
         feval=feval,
-        callbacks=[lgb.early_stopping(stopping_rounds=EARLY_STOPPING_ROUNDS, verbose=False)]
+        #callbacks=[lgb.early_stopping(stopping_rounds=EARLY_STOPPING_ROUNDS, verbose=False)]
     )
     
     return modelo

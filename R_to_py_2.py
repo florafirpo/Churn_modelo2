@@ -40,8 +40,8 @@ GANANCIA_ACIERTO = 780000
 # -----------------------------
 # Experimento
 # -----------------------------
-EXPERIMENTO = "apo-506"
-SEMILLA_PRIMIGENIA = 102191
+EXPERIMENTO = "Algo"
+SEMILLA_PRIMIGENIA = 550007
 APO = 1
 KSEMILLERIO = 1
 
@@ -54,7 +54,7 @@ DATASET_PATH = "~/datasets/competencia_02_crudo.csv.gz"
 # Periodos (Estructura de 3 etapas)
 # -----------------------------
 # TRAIN: Todos los meses desde 201901 hasta 202102
-FOTO_MES_TRAIN_INICIO = 201901
+FOTO_MES_TRAIN_INICIO = 202001
 FOTO_MES_TRAIN_FIN = 202102
 
 # TEST: Dos meses de validación
@@ -90,22 +90,21 @@ UNDERSAMPLING_RATIO = 0.05  # Proporción de clase mayoritaria a mantener (0.1 =
 # -----------------------------
 # LightGBM - Parámetros (estilo zlightgbm)
 # -----------------------------
-MIN_DATA_IN_LEAF = 20
+MIN_DATA_IN_LEAF = 2000
 LEARNING_RATE = 1.0
-GRADIENT_BOUND = 0.1
-NUM_LEAVES = 999
-FEATURE_FRACTION = 0.5
+GRADIENT_BOUND = 0.01
+NUM_LEAVES = 300
+FEATURE_FRACTION = 0.8
 BAGGING_FRACTION = 0.8
 BAGGING_FREQ = 5
 MAX_BIN = 31  # Reducir para ahorrar memoria
 NUM_BOOST_ROUND = 1000
 EARLY_STOPPING_ROUNDS = 200
-
 # -----------------------------
 # Cortes para evaluar
 # -----------------------------
-CORTES = [8000, 8500, 9000, 9500, 10000, 10500, 11000, 
-          11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000]
+CORTES = [9000, 9500, 10000, 11000, 
+          11500, 12000]
 
 # -----------------------------
 # Rutas
@@ -741,10 +740,7 @@ def etapa_testing(df_train, df_test1, df_test2, feature_cols, exp_path):
     
     gan_test2_prom = matriz_gan_test2.mean(axis=0)
     gan_test2_std = matriz_gan_test2.std(axis=0)
-    
-    # Ganancia promedio combinada
-    gan_promedio = (gan_test1_prom + gan_test2_prom) / 2
-    
+        
     # Crear DataFrame de resultados
     df_testing = pd.DataFrame({
         'corte': CORTES,
@@ -752,18 +748,18 @@ def etapa_testing(df_train, df_test1, df_test2, feature_cols, exp_path):
         'gan_test1_std': gan_test1_std,
         'gan_test2_prom': gan_test2_prom,
         'gan_test2_std': gan_test2_std,
-        'gan_promedio': gan_promedio,
         'gan_min': np.minimum(gan_test1_prom, gan_test2_prom),
         'gan_max': np.maximum(gan_test1_prom, gan_test2_prom)
     })
     
     # Identificar mejor corte
-    idx_mejor = np.argmax(gan_promedio)
-    mejor_corte = CORTES[idx_mejor]
-    mejor_ganancia = gan_promedio[idx_mejor]
+    #idx_mejor = np.argmax(gan_promedio)
+    #mejor_corte = CORTES[idx_mejor]
+    #mejor_ganancia = gan_promedio[idx_mejor]
     
     logger.info(f"\nResultados Testing:")
     logger.info(f"  Mejor corte: {mejor_corte}")
+    #
     logger.info(f"  Ganancia promedio: ${mejor_ganancia:,.0f}")
     logger.info(f"  Test 1: ${gan_test1_prom[idx_mejor]:,.0f} (±${gan_test1_std[idx_mejor]:,.0f})")
     logger.info(f"  Test 2: ${gan_test2_prom[idx_mejor]:,.0f} (±${gan_test2_std[idx_mejor]:,.0f})")

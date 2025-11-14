@@ -1,0 +1,78 @@
+2025-11-14 19:41:12 - __main__ - INFO - Logging configurado. Guardando en: ./exp/apo-506_20251114_194112/experimento.log
+2025-11-14 19:41:12 - __main__ - INFO - ================================================================================
+2025-11-14 19:41:12 - __main__ - INFO - R_to_py MEJORADO: Workflow Completo de 3 Etapas
+2025-11-14 19:41:12 - __main__ - INFO - ================================================================================
+2025-11-14 19:41:12 - __main__ - INFO - Inicio: 2025-11-14 19:41:12
+2025-11-14 19:41:12 - __main__ - INFO - Experimento: apo-506
+2025-11-14 19:41:12 - __main__ - INFO - Ganancia por acierto: $780,000
+2025-11-14 19:41:12 - __main__ - INFO - Costo por estímulo: $20,000
+2025-11-14 19:41:12 - __main__ - INFO - Canaritos: 5 (con Polars, al principio)
+2025-11-14 19:41:12 - __main__ - INFO - Lags y Deltas: True (órdenes: [1, 2])
+2025-11-14 19:41:12 - __main__ - INFO - Undersampling: True (ratio=0.05)
+2025-11-14 19:41:12 - __main__ - INFO - 
+2025-11-14 19:41:12 - __main__ - INFO - Configuración guardada en: ./exp/apo-506_20251114_194112/configuracion.json
+2025-11-14 19:41:12 - __main__ - INFO - Configuración guardada en: ./exp/apo-506_20251114_194112/configuracion.json
+2025-11-14 19:41:12 - __main__ - INFO - 
+2025-11-14 19:41:12 - __main__ - INFO - ================================================================================
+2025-11-14 19:41:12 - __main__ - INFO - PASO 1: Carga y preprocesamiento
+2025-11-14 19:41:12 - __main__ - INFO - ================================================================================
+2025-11-14 19:41:12 - __main__ - INFO - Cargando dataset desde ~/datasets/competencia_02_crudo.csv.gz...
+2025-11-14 19:43:19 - __main__ - INFO - Dataset cargado: (4717958, 154)
+2025-11-14 19:43:19 - __main__ - INFO - Calculando clase_ternaria...
+2025-11-14 19:43:41 - __main__ - INFO - Distribución de clases por periodo:
+2025-11-14 19:43:42 - __main__ - INFO -   201901: BAJA+1 = 645
+2025-11-14 19:43:42 - __main__ - INFO -   201901: BAJA+2 = 729
+2025-11-14 19:43:42 - __main__ - INFO -   201901: CONTINUA = 122899
+2025-11-14 19:43:42 - __main__ - INFO -   201902: BAJA+1 = 733
+2025-11-14 19:43:42 - __main__ - INFO -   201902: BAJA+2 = 707
+2025-11-14 19:43:42 - __main__ - INFO -   201902: CONTINUA = 123961
+2025-11-14 19:43:42 - __main__ - INFO -   201903: BAJA+1 = 708
+2025-11-14 19:43:42 - __main__ - INFO -   201903: BAJA+2 = 751
+2025-11-14 19:43:42 - __main__ - INFO -   201903: CONTINUA = 124508
+2025-11-14 19:43:42 - __main__ - INFO -   201904: BAJA+1 = 756
+2025-11-14 19:43:42 - __main__ - INFO -   201904: BAJA+2 = 514
+2025-11-14 19:43:42 - __main__ - INFO -   201904: CONTINUA = 125268
+2025-11-14 19:43:42 - __main__ - INFO -   201905: BAJA+1 = 517
+2025-11-14 19:43:42 - __main__ - INFO -   201905: BAJA+2 = 692
+2025-11-14 19:43:42 - __main__ - INFO -   201905: CONTINUA = 125993
+2025-11-14 19:43:42 - __main__ - INFO -   201906: BAJA+1 = 696
+2025-11-14 19:43:42 - __main__ - INFO -   201906: BAJA+2 = 608
+2025-11-14 19:43:42 - __main__ - INFO -   201906: CONTINUA = 127430
+2025-11-14 19:43:42 - __main__ - INFO -   201907: BAJA+1 = 611
+2025-11-14 19:43:42 - __main__ - INFO -   201907: BAJA+2 = 680
+2025-11-14 19:43:42 - __main__ - INFO - Agregando 5 canaritos con Polars (AL PRINCIPIO)...
+2025-11-14 19:43:46 - __main__ - INFO -   ✓ 5 canaritos agregados al principio
+2025-11-14 19:43:46 - __main__ - INFO -   ✓ Primeras columnas: ['canarito_1', 'canarito_2', 'canarito_3', 'canarito_4', 'canarito_5', 'numero_de_cliente', 'foto_mes', 'active_quarter', 'cliente_vip', 'internet']
+2025-11-14 19:43:46 - __main__ - INFO - Agregando lags y deltas (órdenes: [1, 2])...
+2025-11-14 19:43:51 - __main__ - INFO -   Columnas lagueables: 152
+2025-11-14 19:43:51 - __main__ - INFO -   Órdenes de lag: [1, 2]
+2025-11-14 19:43:51 - __main__ - INFO -   Creando lags de orden 1...
+2025-11-14 19:44:24 - __main__ - INFO -   Creando lags de orden 2...
+2025-11-14 19:45:00 - __main__ - INFO -   Creando deltas...
+2025-11-14 19:45:29 - __main__ - INFO -   ✓ Features creados: 608 (304 lags + 304 deltas)
+2025-11-14 19:45:29 - __main__ - INFO -   ✓ Duración: 0:01:42.971635
+2025-11-14 19:45:29 - __main__ - INFO -   ✓ Shape final: (4717958, 768)
+2025-11-14 19:45:30 - __main__ - INFO - ================================================================================
+2025-11-14 19:45:30 - __main__ - INFO - PASO 2: Preparación de datos (3 etapas)
+2025-11-14 19:45:30 - __main__ - INFO - ================================================================================
+2025-11-14 19:45:30 - __main__ - INFO - Train: 202001 a 202102
+2025-11-14 19:45:30 - __main__ - INFO - Test: 202104 y 202106
+2025-11-14 19:45:30 - __main__ - INFO - Final: 202108
+2025-11-14 19:45:30 - __main__ - INFO - Preparando datos para workflow de 3 etapas...
+2025-11-14 19:45:30 - __main__ - INFO - Meses de entrenamiento: 202001 a 202102 (14 meses)
+2025-11-14 19:50:16 - __main__ - INFO - Train: 2,165,514 registros (14 meses)
+2025-11-14 19:50:16 - __main__ - INFO - Test 1 (202104): 163,418 registros
+2025-11-14 19:50:16 - __main__ - INFO - Test 2 (202106): 164,313 registros
+2025-11-14 19:50:16 - __main__ - INFO - Final (202108): 164,822 registros
+2025-11-14 19:50:16 - __main__ - INFO - Aplicando undersampling (ratio=0.05)...
+2025-11-14 19:50:23 - __main__ - INFO -   Antes - CONTINUA: 2,150,070, BAJA+1: 7,542, BAJA+2: 7,902
+2025-11-14 19:50:27 - __main__ - INFO -   Después - CONTINUA: 107,503, BAJA+1: 7,542, BAJA+2: 7,902
+2025-11-14 19:50:27 - __main__ - INFO -   Total registros: 2,165,514 -> 122,947
+2025-11-14 19:50:27 - __main__ - INFO - Features: 765
+2025-11-14 19:50:27 - __main__ - INFO - ================================================================================
+2025-11-14 19:50:27 - __main__ - INFO - ETAPA 2: TESTING (202104 y 202106)
+2025-11-14 19:50:27 - __main__ - INFO - ================================================================================
+2025-11-14 19:50:28 - __main__ - INFO - Train - Registros: 122,947, BAJA+2: 7,902 (6.43%)
+2025-11-14 19:50:28 - __main__ - INFO - Test 1 - Registros: 163,418, BAJA+2: 1,130 (0.69%)
+2025-11-14 19:50:28 - __main__ - INFO - Test 2 - Registros: 164,313, BAJA+2: 1,134 (0.69%)
+2025-11-14 19:50:28 - __main__ - INFO -   Entrenando con semilla 1/1 (seed=622358628)...

@@ -74,6 +74,10 @@ SEMILLAS_FINAL = 1        # Para predicción final
 # Feature Engineering
 # -----------------------------
 QCANARITOS = 5  # Cantidad de variables aleatorias (canaritos)
+# Lags y Deltas
+FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
+LAGS_ORDEN = [1, 2]  # Órdenes de lags a crear (1 y 2)
+# Si LAGS_ORDEN = [1, 2, 3] creará lag1, lag2, lag3 y delta1, delta2, delta3
 
 # -----------------------------
 # Undersampling
@@ -375,6 +379,82 @@ def agregar_canaritos(df, num_canaritos=None, semilla=None):
     for i in range(num_canaritos):
         nombre = f'canarito{i+1}'
         df[nombre] = np.random.rand(len(df))
+    
+    return df
+
+
+# ============================================================================
+# FEATURE ENGINEERING: LAGS Y DELTAS
+# ============================================================================
+
+def agregar_lags_y_deltas(df, ordenes=None):
+    """
+    Agrega lags y deltas (diferencias) de variables históricas
+    
+    Args:
+        df: DataFrame con los datos
+        ordenes: Lista de órdenes de lags a crear (ej: [1, 2])
+    
+    Returns:
+        DataFrame con lags y deltas agregados
+    """
+    if ordenes is None:
+        ordenes = LAGS_ORDEN
+    
+    if not FEATURE_ENGINEERING_LAGS:
+        logger.info("Feature engineering de lags/deltas desactivado")
+        return df
+    
+    logger.info(f"Agregando lags y deltas (órdenes: {ordenes})...")
+    inicio = datetime.now()
+    
+    # Ordenar por cliente y periodo
+    df = df.sort_values(['numero_de_cliente', 'foto_mes']).reset_index(drop=True)
+    
+    # Identificar columnas lagueables
+    # Todo es lagueable MENOS: numero_de_cliente, foto_mes, clase_ternaria, canaritos
+    cols_excluir = ['numero_de_cliente', 'foto_mes', 'clase_ternaria']
+    cols_excluir += [f'canarito{i}' for i in range(1, QCANARITOS + 1)]
+    
+    cols_lagueables = [col for col in df.columns if col not in cols_excluir]
+    
+    logger.info(f"  Columnas lagueables: {len(cols_lagueables)}")
+    logger.info(f"  Órdenes de lag: {ordenes}")
+    
+    # Crear lags para cada orden
+    for orden in ordenes:
+        logger.info(f"  Creando lags de orden {orden}...")
+        
+        # Crear lags usando groupby + shift
+        for col in cols_lagueables:
+            nombre_lag = f'{col}_lag{orden}'
+            df[nombre_lag] = df.groupby('numero_de_cliente')[col].shift(orden)
+        
+        # Limpiar memoria después de cada orden
+        limpiar_memoria()
+    
+    # Crear deltas (diferencias)
+    logger.info(f"  Creando deltas...")
+    for orden in ordenes:
+        for col in cols_lagueables:
+            nombre_delta = f'{col}_delta{orden}'
+            nombre_lag = f'{col}_lag{orden}'
+            
+            # Delta = valor actual - valor lag
+            df[nombre_delta] = df[col] - df[nombre_lag]
+        
+        # Limpiar memoria después de cada orden
+        limpiar_memoria()
+    
+    # Contar features creados
+    n_lags = len(cols_lagueables) * len(ordenes)
+    n_deltas = len(cols_lagueables) * len(ordenes)
+    n_total = n_lags + n_deltas
+    
+    duracion = datetime.now() - inicio
+    logger.info(f"  ✓ Features creados: {n_total} ({n_lags} lags + {n_deltas} deltas)")
+    logger.info(f"  ✓ Duración: {duracion}")
+    logger.info(f"  ✓ Shape final: {df.shape}")
     
     return df
 
@@ -914,7 +994,11 @@ def main():
     
     # Agregar canaritos
     df = agregar_canaritos(df, QCANARITOS)
-    
+
+    # Agregar lags y deltas
+    if FEATURE_ENGINEERING_LAGS:
+        df = agregar_lags_y_deltas(df, LAGS_ORDEN)
+        
     limpiar_memoria()
     print()
     
@@ -943,8 +1027,8 @@ def main():
     # ========================================================================
     # PASO 4: ETAPA FINAL (202108)
     # ========================================================================
-    predicciones = etapa_final(df_train, df_final, feature_cols, exp_path)
-    print()
+    #predicciones = etapa_final(df_train, df_final, feature_cols, exp_path)
+    #print()
     
     # ========================================================================
     # PASO 5: GENERACIÓN DE SUBMISSIONS
@@ -953,8 +1037,8 @@ def main():
     logger.info("PASO 5: Generación de submissions")
     logger.info("="*80)
     
-    df_resultados = generar_submissions(predicciones, exp_path)
-    print()
+    #df_resultados = generar_submissions(predicciones, exp_path)
+    #print()
     
     # ========================================================================
     # RESUMEN FINAL

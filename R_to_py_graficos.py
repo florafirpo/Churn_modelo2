@@ -50,7 +50,7 @@ GANANCIA_ACIERTO = 780000
 # -----------------------------
 # Experimento
 # -----------------------------
-EXPERIMENTO = "Con_graf"
+EXPERIMENTO = "apo-506"
 SEMILLA_PRIMIGENIA = 550007
 APO = 1
 KSEMILLERIO = 1
@@ -64,7 +64,7 @@ DATASET_PATH = "~/datasets/competencia_02_crudo.csv.gz"
 # Periodos (Estructura de 3 etapas)
 # -----------------------------
 # TRAIN: Todos los meses desde 201901 hasta 202102
-FOTO_MES_TRAIN_INICIO = 202001
+FOTO_MES_TRAIN_INICIO = 201901
 FOTO_MES_TRAIN_FIN = 202102
 
 # TEST: Dos meses de validación
@@ -83,8 +83,11 @@ SEMILLAS_FINAL = 1        # Para predicción final
 # -----------------------------
 # Feature Engineering
 # -----------------------------
-QCANARITOS = 100  # Cantidad de variables aleatorias (canaritos)
-
+QCANARITOS = 5  # Cantidad de variables aleatorias (canaritos)
+# Lags y Deltas
+FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
+LAGS_ORDEN = [1, 2]  # Órdenes de lags a crear (1 y 2)
+# Si LAGS_ORDEN = [1, 2, 3] creará lag1, lag2, lag3 y delta1, delta2, delta3
 # -----------------------------
 # Undersampling
 # -----------------------------
@@ -109,7 +112,8 @@ EARLY_STOPPING_ROUNDS = 200
 # -----------------------------
 # Cortes para evaluar
 # -----------------------------
-CORTES = [9000, 10000, 11000, 11500, 12000]
+CORTES = [8000, 8500, 9000, 9500, 10000, 10500, 11000, 
+          11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000]
 
 # -----------------------------
 # Rutas
@@ -127,7 +131,7 @@ def calcular_ganancia(y_pred, y_true):
     
     Args:
         y_true: Valores reales (0 o 1)
-        y_pred: Predicciones (probabilidades o scores continuos)
+        y_pred: Predicciones (probabilidades o scores continuos) -> DEBE SER CONTINUO
         
     Returns:
         tuple[float, np.ndarray]: Ganancia máxima acumulada y la serie acumulada completa.
@@ -198,18 +202,20 @@ def calcular_ganancia(y_pred, y_true):
 def ganancia_lgb_binary(y_pred, y_true):
     """
     Función de ganancia para LightGBM en clasificación binaria.
-    Compatible con callbacks de LightGBM.
+    Compatible con callbacks de LightGBM (feval).
     
     Args:
-        y_pred: Predicciones de probabilidad del modelo
+        y_pred: Predicciones DE PROBABILIDAD (ya que LightGBM devuelve prob. para binario)
         y_true: Dataset de LightGBM con labels verdaderos
         
     Returns:
         tuple: (eval_name, eval_result, is_higher_better)
     """
     y_true_labels = y_true.get_label()
-    y_pred_binary = (y_pred > 0.025).astype(int)
-    ganancia_total, _ = calcular_ganancia(y_pred=y_pred_binary, y_true=y_true_labels)
+    # Pasamos las predicciones continuas (y_pred) a la función de ganancia
+    ganancia_total, _ = calcular_ganancia(y_pred=y_pred, y_true=y_true_labels)
+    # Nota: la implementación del curso usa un umbral fijo 0.025 aquí para feval, 
+    # pero el cálculo correcto de la ganancia máxima no necesita un umbral fijo.
     return "ganancia", ganancia_total, True
 
 
@@ -270,7 +276,9 @@ def guardar_configuracion(exp_path):
             "ksemillerio": KSEMILLERIO
         },
         "feature_engineering": {
-            "qcanaritos": QCANARITOS
+            "qcanaritos": QCANARITOS,
+            "lags_enabled": FEATURE_ENGINEERING_LAGS,
+            "lags_orden": LAGS_ORDEN
         },
         "undersampling": {
             "enabled": UNDERSAMPLING,
@@ -482,6 +490,80 @@ def calcular_clase_ternaria(df):
     
     return df
 
+# ============================================================================
+# FEATURE ENGINEERING: LAGS Y DELTAS
+# ============================================================================
+
+def agregar_lags_y_deltas(df, ordenes=None):
+    """
+    Agrega lags y deltas (diferencias) de variables históricas
+    
+    Args:
+        df: DataFrame con los datos
+        ordenes: Lista de órdenes de lags a crear (ej: [1, 2])
+    
+    Returns:
+        DataFrame con lags y deltas agregados
+    """
+    if ordenes is None:
+        ordenes = LAGS_ORDEN
+    
+    if not FEATURE_ENGINEERING_LAGS:
+        logger.info("Feature engineering de lags/deltas desactivado")
+        return df
+    
+    logger.info(f"Agregando lags y deltas (órdenes: {ordenes})...")
+    inicio = datetime.now()
+    
+    # Ordenar por cliente y periodo
+    df = df.sort_values(['numero_de_cliente', 'foto_mes']).reset_index(drop=True)
+    
+    # Identificar columnas lagueables
+    # Todo es lagueable MENOS: numero_de_cliente, foto_mes, clase_ternaria, canaritos
+    cols_excluir = ['numero_de_cliente', 'foto_mes', 'clase_ternaria']
+    cols_excluir += [f'canarito{i}' for i in range(1, QCANARITOS + 1)]
+    
+    cols_lagueables = [col for col in df.columns if col not in cols_excluir]
+    
+    logger.info(f"  Columnas lagueables: {len(cols_lagueables)}")
+    logger.info(f"  Órdenes de lag: {ordenes}")
+    
+    # Crear lags para cada orden
+    for orden in ordenes:
+        logger.info(f"  Creando lags de orden {orden}...")
+        
+        # Crear lags usando groupby + shift
+        for col in cols_lagueables:
+            nombre_lag = f'{col}_lag{orden}'
+            df[nombre_lag] = df.groupby('numero_de_cliente')[col].shift(orden)
+        
+        # Limpiar memoria después de cada orden
+        limpiar_memoria()
+    
+    # Crear deltas (diferencias)
+    logger.info(f"  Creando deltas...")
+    for orden in ordenes:
+        for col in cols_lagueables:
+            nombre_delta = f'{col}_delta{orden}'
+            nombre_lag = f'{col}_lag{orden}'
+            
+            # Delta = valor actual - valor lag
+            df[nombre_delta] = df[col] - df[nombre_lag]
+        
+        # Limpiar memoria después de cada orden
+        limpiar_memoria()
+    
+    # Contar features creados
+    n_lags = len(cols_lagueables) * len(ordenes)
+    n_deltas = len(cols_lagueables) * len(ordenes)
+    n_total = n_lags + n_deltas
+    
+    duracion = datetime.now() - inicio
+    logger.info(f"  ✓ Features creados: {n_total} ({n_lags} lags + {n_deltas} deltas)")
+    logger.info(f"  ✓ Duración: {duracion}")
+    logger.info(f"  ✓ Shape final: {df.shape}")
+    
+    return df
 
 def agregar_canaritos(df, num_canaritos=None, semilla=None):
     """Agrega variables aleatorias (canaritos) para detectar overfitting"""
@@ -716,41 +798,40 @@ def etapa_testing(df_train, df_test1, df_test2, feature_cols, exp_path):
         y_pred_test1 = modelo.predict(X_test1)
         predicciones_acum_test1 += y_pred_test1
         
-        df_pred_test1 = pd.DataFrame({
-            'y_true': y_test1.values,
-            'y_pred': y_pred_test1
-        }).sort_values('y_pred', ascending=False).reset_index(drop=True)
-        
         # Predecir en test2
         y_pred_test2 = modelo.predict(X_test2)
         predicciones_acum_test2 += y_pred_test2
         
-        df_pred_test2 = pd.DataFrame({
-            'y_true': y_test2.values,
-            'y_pred': y_pred_test2
-        }).sort_values('y_pred', ascending=False).reset_index(drop=True)
+        # ====================================================================
+        # CORRECCIÓN DE DATA LEAKAGE LÓGICO: 
+        # Calcular curva de ganancia UNA SOLA VEZ usando PROBABILIDADES
+        # ====================================================================
         
-        # Calcular ganancia para cada corte
+        # Test 1: Calcula la curva completa
+        _, gan_acumulada_test1 = calcular_ganancia(
+            y_pred=y_pred_test1, 
+            y_true=y_test1.values
+        )
+        
+        # Test 2: Calcula la curva completa
+        _, gan_acumulada_test2 = calcular_ganancia(
+            y_pred=y_pred_test2, 
+            y_true=y_test2.values
+        )
+        
+        # Calcular ganancia para cada corte (extrayendo del índice de la curva)
         for idx_corte, corte in enumerate(CORTES):
-            # Test 1
-            n_envios = min(corte, len(df_pred_test1))
-            df_pred_test1['pred_binary'] = 0
-            df_pred_test1.loc[:n_envios-1, 'pred_binary'] = 1
-            ganancia1, _ = calcular_ganancia(
-                y_pred=df_pred_test1['pred_binary'].values,
-                y_true=df_pred_test1['y_true'].values
-            )
-            matriz_gan_test1[idx_sem, idx_corte] = ganancia1
+            n_envios = min(corte, len(gan_acumulada_test1))
             
-            # Test 2
-            n_envios = min(corte, len(df_pred_test2))
-            df_pred_test2['pred_binary'] = 0
-            df_pred_test2.loc[:n_envios-1, 'pred_binary'] = 1
-            ganancia2, _ = calcular_ganancia(
-                y_pred=df_pred_test2['pred_binary'].values,
-                y_true=df_pred_test2['y_true'].values
-            )
-            matriz_gan_test2[idx_sem, idx_corte] = ganancia2
+            # Test 1: La ganancia en el corte N es el valor de la curva acumulada en el índice N-1
+            if n_envios > 0:
+                matriz_gan_test1[idx_sem, idx_corte] = gan_acumulada_test1[n_envios - 1]
+            
+            # Test 2: La ganancia en el corte N es el valor de la curva acumulada en el índice N-1
+            if n_envios > 0:
+                matriz_gan_test2[idx_sem, idx_corte] = gan_acumulada_test2[n_envios - 1]
+
+        # ====================================================================
         
         del modelo
         limpiar_memoria()
@@ -759,7 +840,7 @@ def etapa_testing(df_train, df_test1, df_test2, feature_cols, exp_path):
     predicciones_prom_test1 = predicciones_acum_test1 / SEMILLAS_EXPERIMENTO
     predicciones_prom_test2 = predicciones_acum_test2 / SEMILLAS_EXPERIMENTO
     
-    # Crear DataFrames de predicciones promedio
+    # Crear DataFrames de predicciones promedio (ordenados por prob)
     df_pred_final_test1 = pd.DataFrame({
         'numero_de_cliente': df_test1['numero_de_cliente'].values,
         'foto_mes': df_test1['foto_mes'].values,
@@ -1074,7 +1155,10 @@ def main():
     
     # Calcular clase_ternaria
     df = calcular_clase_ternaria(df)
-    
+    logger.info(f"Lags y Deltas: {FEATURE_ENGINEERING_LAGS} (órdenes: {LAGS_ORDEN if FEATURE_ENGINEERING_LAGS else 'N/A'})")
+    # Agregar lags y deltas
+    if FEATURE_ENGINEERING_LAGS:
+        df = agregar_lags_y_deltas(df, LAGS_ORDEN)
     # Agregar canaritos
     df = agregar_canaritos(df, QCANARITOS)
     

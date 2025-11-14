@@ -1,0 +1,16 @@
+corte,envios,archivo_predicted,archivo_prob
+8000,8000,KAapo-506_8000_test_202106.csv,KAapo-506_8000_test_202106_prob.csv
+8500,8500,KAapo-506_8500_test_202106.csv,KAapo-506_8500_test_202106_prob.csv
+9000,9000,KAapo-506_9000_test_202106.csv,KAapo-506_9000_test_202106_prob.csv
+9500,9500,KAapo-506_9500_test_202106.csv,KAapo-506_9500_test_202106_prob.csv
+10000,10000,KAapo-506_10000_test_202106.csv,KAapo-506_10000_test_202106_prob.csv
+10500,10500,KAapo-506_10500_test_202106.csv,KAapo-506_10500_test_202106_prob.csv
+11000,11000,KAapo-506_11000_test_202106.csv,KAapo-506_11000_test_202106_prob.csv
+11500,11500,KAapo-506_11500_test_202106.csv,KAapo-506_11500_test_202106_prob.csv
+12000,12000,KAapo-506_12000_test_202106.csv,KAapo-506_12000_test_202106_prob.csv
+12500,12500,KAapo-506_12500_test_202106.csv,KAapo-506_12500_test_202106_prob.csv
+13000,13000,KAapo-506_13000_test_202106.csv,KAapo-506_13000_test_202106_prob.csv
+13500,13500,KAapo-506_13500_test_202106.csv,KAapo-506_13500_test_202106_prob.csv
+14000,14000,KAapo-506_14000_test_202106.csv,KAapo-506_14000_test_202106_prob.csv
+14500,14500,KAapo-506_14500_test_202106.csv,KAapo-506_14500_test_202106_prob.csv
+15000,15000,KAapo-506_15000_test_202106.csv,KAapo-506_15000_test_202106_prob.csv

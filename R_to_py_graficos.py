@@ -50,7 +50,7 @@ GANANCIA_ACIERTO = 780000
 # -----------------------------
 # Experimento
 # -----------------------------
-EXPERIMENTO = "apo-506"
+EXPERIMENTO = "experimento_meses"
 SEMILLA_PRIMIGENIA = 550007
 APO = 1
 KSEMILLERIO = 1
@@ -64,7 +64,7 @@ DATASET_PATH = "~/datasets/competencia_02_crudo.csv.gz"
 # Periodos (Estructura de 3 etapas)
 # -----------------------------
 # TRAIN: Todos los meses desde 201901 hasta 202102
-FOTO_MES_TRAIN_INICIO = 202003
+FOTO_MES_TRAIN_INICIO = 201901
 FOTO_MES_TRAIN_FIN = 202102
 
 # TEST: Dos meses de validación

@@ -64,7 +64,7 @@ DATASET_PATH = "~/datasets/competencia_02_crudo.csv.gz"
 # Periodos (Estructura de 3 etapas)
 # -----------------------------
 # TRAIN: Todos los meses desde 201901 hasta 202102
-FOTO_MES_TRAIN_INICIO = 201901
+FOTO_MES_TRAIN_INICIO = 202003
 FOTO_MES_TRAIN_FIN = 202102
 
 # TEST: Dos meses de validación

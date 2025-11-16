@@ -50,9 +50,9 @@ GANANCIA_ACIERTO = 780000
 # -----------------------------
 # Experimento
 # -----------------------------
-EXPERIMENTO = "compe_02"
+EXPERIMENTO = "experimento_meses"
 SEMILLA_PRIMIGENIA = 550007
-APO = 2
+APO = 1
 KSEMILLERIO = 1
 
 # -----------------------------

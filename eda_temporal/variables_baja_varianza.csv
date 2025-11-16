@@ -1,0 +1,9 @@
+variable,varianza,n_unique
+cliente_vip,0.0025719060120319333,2
+tcuentas,0.00426508705449923,2
+ccuenta_corriente,0.002487635920397993,3
+cpayroll2_trx,0.0015464620780655173,6
+cforex_buy,0.008938148350461018,10
+ccheques_depositados_rechazados,0.0034542397772301184,7
+ccheques_emitidos_rechazados,0.00501116356010338,9
+Master_delinquency,0.004303030616533856,2

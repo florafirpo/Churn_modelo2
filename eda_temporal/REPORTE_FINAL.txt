@@ -1,0 +1,57 @@
+================================================================================
+1. ANÁLISIS DE REGISTROS Y CLASES
+================================================================================
+
+Mes 202108 (Predicción final):
+  - Total registros: 164,822
+  - Total Bajas: 0.00%
+
+Tendencia de bajas:
+  - Promedio histórico: 0.86%
+  ✓ Mes 202108 tiene menos bajas que el promedio
+
+================================================================================
+2. VARIABLES CON MUCHOS MISSINGS
+================================================================================
+
+⚠️  4 variables con >95.0% missings en algún mes
+
+RECOMENDACIÓN: Considerar **ELIMINAR** estas variables (ver 'variables_con_muchos_missings.csv').
+
+================================================================================
+3. VARIABLES CON DATA DRIFT ALTO (PSI)
+================================================================================
+
+⚠️  12 variables con drift significativo (PSI > 0.25)
+Comparación: Mes 202108 vs Distribución Histórica (BASELINE).
+
+Top 5 Variables con Mayor Drift:
+  - Visa_fultimo_cierre: PSI=6.367, Cambio Media=45.5%
+  - Master_fultimo_cierre: PSI=5.768, Cambio Media=41.4%
+  - Master_Finiciomora: PSI=2.862, Cambio Media=20.9%
+  - cmobile_app_trx: PSI=2.656, Cambio Media=-96.2%
+  - internet: PSI=1.968, Cambio Media=-92.7%
+
+RECOMENDACIÓN:
+  1. **MONITOREAR** estas variables de cerca.
+  2. Considerar **RE-ENTRENAR** el modelo o usar una ventana temporal más corta si el drift no es estacional.
+
+================================================================================
+4. VARIABLES CON VARIANZA MUY BAJA
+================================================================================
+
+⚠️  5 variables constantes en TODOS los meses.
+
+RECOMENDACIÓN: **ELIMINAR** estas variables (no aportan información). Ver 'variables_siempre_constantes.csv'.
+
+================================================================================
+5. RECOMENDACIONES FINALES
+================================================================================
+
+📊 RESUMEN:
+  - Variables a ELIMINAR (missings altos + constantes): 9
+  - Variables con drift ALTO: 12
+
+✅ ACCIONES SUGERIDAS:
+1. **Limpieza de Features:** Eliminar las {len(vars_eliminar)} variables identificadas por missings/constancia.
+2. **Monitoreo de Drift:** Investigar las variables con PSI > {UMBRAL_DRIFT_PSI} y su impacto en el modelo.

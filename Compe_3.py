@@ -52,7 +52,7 @@ GANANCIA_ACIERTO = 780000
 # -----------------------------
 # Experimento
 # -----------------------------
-EXPERIMENTO = "experimento_meses"
+EXPERIMENTO = "compe_2"
 SEMILLA_PRIMIGENIA = 550007
 APO = 2
 KSEMILLERIO = 1
@@ -85,6 +85,13 @@ TRAIN_HASTA_FINAL = 202106
 TRAIN_DESDE = 201901
 
 # -----------------------------
+# Meses a excluir (intermedio)
+# -----------------------------
+# Lista de meses que NO queremos usar en el entrenamiento
+# Ejemplo: [202006, 201909] excluirá junio 2020 y septiembre 2019
+MESES_EXCLUIR = [202006, 201910]  # Puedes agregar o quitar meses aquí
+
+# -----------------------------
 # Semillas
 # -----------------------------
 SEMILLAS_EXPERIMENTO = 1   # Para testing/optimización
@@ -94,10 +101,20 @@ SEMILLAS_FINAL = 1        # Para predicción final
 # Feature Engineering
 # -----------------------------
 QCANARITOS = 5  # Cantidad de variables aleatorias (canaritos)
+
+# Percentiles
+FEATURE_ENGINEERING_PERCENTILES = False  # Activar/desactivar percentiles
+PERCENTILES_REEMPLAZAR = False  # True: reemplaza variables originales, False: agrega nuevas
+
 # Lags y Deltas
 FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
 LAGS_ORDEN = [1, 2]  # Órdenes de lags a crear (1 y 2)
-
+# Lista de columnas a eliminar ANTES del Feature Engineering
+COLUMNAS_A_ELIMINAR = [
+        # Datadrifting historico + contra junio!!! esas dos variables. No funcionó.
+        #'Master_Finiciomora', 
+        #'Visa_Finiciomora'
+    ]
 # -----------------------------
 # Undersampling
 # -----------------------------
@@ -244,6 +261,7 @@ def guardar_configuracion(exp_path):
         },
         "periodos": {
             "train_desde": TRAIN_DESDE,
+            "meses_excluir": MESES_EXCLUIR,
             "test_1": {
                 "predecir": FOTO_MES_TEST_1,
                 "entrenar_hasta": TRAIN_HASTA_TEST1
@@ -265,6 +283,8 @@ def guardar_configuracion(exp_path):
         },
         "feature_engineering": {
             "qcanaritos": QCANARITOS,
+            "percentiles_enabled": FEATURE_ENGINEERING_PERCENTILES,
+            "percentiles_reemplazar": PERCENTILES_REEMPLAZAR,
             "lags_enabled": FEATURE_ENGINEERING_LAGS,
             "lags_orden": LAGS_ORDEN
         },
@@ -546,6 +566,73 @@ def agregar_canaritos(df, num_canaritos=None, semilla=None):
     return df
 
 
+def calcular_percentiles_por_mes(df):
+    """
+    Calcula percentiles de cada variable numérica dentro de cada mes.
+    Esto hace las variables robustas a inflación y data drifting.
+    
+    Args:
+        df: DataFrame con columna 'foto_mes'
+    
+    Returns:
+        DataFrame con variables transformadas a percentiles (0-100)
+    """
+    if not FEATURE_ENGINEERING_PERCENTILES:
+        logger.info("Feature engineering de percentiles desactivado")
+        return df
+    
+    logger.info("Calculando percentiles por mes (robustez a inflación/drifting)...")
+    inicio = datetime.now()
+    
+    # Columnas a excluir del cálculo de percentiles
+    cols_excluir = ['numero_de_cliente', 'foto_mes', 'clase_ternaria']
+    cols_excluir += [f'canarito{i}' for i in range(1, QCANARITOS + 1)]
+    
+    # Identificar columnas numéricas
+    cols_numericas = [col for col in df.columns 
+                      if col not in cols_excluir and df[col].dtype in ['int64', 'float64']]
+    
+    logger.info(f"  Variables a transformar: {len(cols_numericas)}")
+    logger.info(f"  Reemplazar originales: {PERCENTILES_REEMPLAZAR}")
+    
+    # Ordenar por foto_mes para procesar por grupos
+    df = df.sort_values('foto_mes').reset_index(drop=True)
+    
+    # Calcular percentiles por mes para cada variable
+    contador = 0
+    for col in cols_numericas:
+        if contador % 50 == 0 and contador > 0:
+            logger.info(f"    Procesadas {contador}/{len(cols_numericas)} variables...")
+        
+        # Calcular percentil dentro de cada mes (rank normalizado a 0-100)
+        nombre_percentil = f'{col}_percentil' if not PERCENTILES_REEMPLAZAR else col
+        
+        # Usar rank con pct=True da valores entre 0 y 1, multiplicar por 100
+        df[nombre_percentil] = (df.groupby('foto_mes')[col]
+                                .rank(pct=True, method='average') * 100)
+        
+        # Si reemplazamos, eliminar la original (ya fue reemplazada con el mismo nombre)
+        # Si no reemplazamos, la nueva columna tiene sufijo _percentil
+        
+        contador += 1
+    
+    # Si reemplazamos, las columnas originales ya tienen los percentiles
+    # Si no reemplazamos, tenemos las originales + las _percentil
+    
+    duracion = datetime.now() - inicio
+    n_nuevas = len(cols_numericas) if not PERCENTILES_REEMPLAZAR else 0
+    
+    if PERCENTILES_REEMPLAZAR:
+        logger.info(f"  ✓ {len(cols_numericas)} variables REEMPLAZADAS por sus percentiles")
+    else:
+        logger.info(f"  ✓ {n_nuevas} variables NUEVAS de percentiles agregadas")
+    
+    logger.info(f"  ✓ Duración: {duracion}")
+    logger.info(f"  ✓ Shape: {df.shape}")
+    
+    return df
+
+
 def aplicar_undersampling(df, ratio=None, semilla=None):
     """Aplica undersampling a la clase mayoritaria (CONTINUA)"""
     if ratio is None:
@@ -600,6 +687,15 @@ def preparar_datos_por_etapa(df, train_hasta, test_mes, feature_cols=None):
     """
     # Generar meses de entrenamiento
     meses_train = generar_rango_meses(TRAIN_DESDE, train_hasta)
+    
+    # Excluir meses especificados
+    if MESES_EXCLUIR:
+        meses_originales = len(meses_train)
+        meses_train = [m for m in meses_train if m not in MESES_EXCLUIR]
+        meses_excluidos = meses_originales - len(meses_train)
+        if meses_excluidos > 0:
+            logger.info(f"  ⚠️  Meses excluidos del entrenamiento: {MESES_EXCLUIR}")
+            logger.info(f"  ⚠️  Total de meses excluidos: {meses_excluidos}")
     
     # Filtrar datos
     df_train = df[df['foto_mes'].isin(meses_train)].copy()
@@ -1015,6 +1111,17 @@ def main():
     logger.info(f"Dataset cargado: {df.shape}")
     
     df = calcular_clase_ternaria(df)
+
+# Eliminación de columnas hardcodeadas en la sección de CONFIGURACIÓN
+    if COLUMNAS_A_ELIMINAR:
+        logger.info(f"\nEliminando {len(COLUMNAS_A_ELIMINAR)} columnas del dataset (Configuración)...")
+        # Eliminar las columnas
+        df = df.drop(columns=COLUMNAS_A_ELIMINAR, errors='ignore') 
+        logger.info(f"Dataset después de la eliminación: {df.shape}")
+    
+    # Feature Engineering: Percentiles (antes de lags para que los lags usen percentiles)
+    df = calcular_percentiles_por_mes(df)
+    limpiar_memoria()
     
     if FEATURE_ENGINEERING_LAGS:
         df = agregar_lags_y_deltas(df, LAGS_ORDEN)
@@ -1067,9 +1174,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-

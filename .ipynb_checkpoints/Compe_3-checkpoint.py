@@ -52,8 +52,8 @@ GANANCIA_ACIERTO = 780000
 # -----------------------------
 # Experimento
 # -----------------------------
-EXPERIMENTO = "compe_2_dani"
-SEMILLA_PRIMIGENIA = 648269
+EXPERIMENTO = "compe_2"
+SEMILLA_PRIMIGENIA = 550007
 APO = 2
 KSEMILLERIO = 1
 
@@ -97,7 +97,12 @@ QCANARITOS = 5  # Cantidad de variables aleatorias (canaritos)
 # Lags y Deltas
 FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
 LAGS_ORDEN = [1, 2]  # Órdenes de lags a crear (1 y 2)
-
+# Lista de columnas a eliminar ANTES del Feature Engineering
+COLUMNAS_A_ELIMINAR = [
+        # Datadrifting historico + contra junio!!! esas dos variables. No funcionó.
+        #'Master_Finiciomora', 
+        #'Visa_Finiciomora'
+    ]
 # -----------------------------
 # Undersampling
 # -----------------------------
@@ -1015,6 +1020,13 @@ def main():
     logger.info(f"Dataset cargado: {df.shape}")
     
     df = calcular_clase_ternaria(df)
+
+# Eliminación de columnas hardcodeadas en la sección de CONFIGURACIÓN
+    if COLUMNAS_A_ELIMINAR:
+        logger.info(f"\nEliminando {len(COLUMNAS_A_ELIMINAR)} columnas del dataset (Configuración)...")
+        # Eliminar las columnas
+        df = df.drop(columns=COLUMNAS_A_ELIMINAR, errors='ignore') 
+        logger.info(f"Dataset después de la eliminación: {df.shape}")
     
     if FEATURE_ENGINEERING_LAGS:
         df = agregar_lags_y_deltas(df, LAGS_ORDEN)

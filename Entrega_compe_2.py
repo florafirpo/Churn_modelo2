@@ -99,9 +99,9 @@ FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
 LAGS_ORDEN = [1, 2]  # Órdenes de lags a crear (1 y 2)
 # Lista de columnas a eliminar ANTES del Feature Engineering
 COLUMNAS_A_ELIMINAR = [
-        # Datadrifting historico + contra junio!!! esas dos variables. No funcionó.
-        #'Master_Finiciomora', 
-        #'Visa_Finiciomora'
+        # Datadrifting historico + contra junio!!! esas dos variables
+        'Master_Finiciomora', 
+        'Visa_Finiciomora'
     ]
 # -----------------------------
 # Undersampling

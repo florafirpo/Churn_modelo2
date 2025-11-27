@@ -82,7 +82,7 @@ TRAIN_HASTA_TEST2 = 202104
 TRAIN_HASTA_FINAL = 202106
 
 # Mes de inicio del entrenamiento (común para todos)
-TRAIN_DESDE = 201901
+TRAIN_DESDE = 202009
 
 # -----------------------------
 # Semillas

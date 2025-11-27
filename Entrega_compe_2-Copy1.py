@@ -96,10 +96,10 @@ SEMILLAS_FINAL = 1        # Para predicción final
 QCANARITOS = 5  # Cantidad de variables aleatorias (canaritos)
 # Lags y Deltas
 FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
-LAGS_ORDEN = [1, 2]  # Órdenes de lags a crear (1 y 2)
+LAGS_ORDEN = [1, 2, 3, 4]  # Órdenes de lags a crear (1 y 2)
 # Lista de columnas a eliminar ANTES del Feature Engineering
 COLUMNAS_A_ELIMINAR = [
-        # Datadrifting historico + contra junio!!! esas dos variables. No funcionó.
+        # Datadrifting historico + contra junio!!! esas dos variables
         #'Master_Finiciomora', 
         #'Visa_Finiciomora'
     ]
@@ -607,8 +607,8 @@ def preparar_datos_por_etapa(df, train_hasta, test_mes, feature_cols=None):
     meses_train = generar_rango_meses(TRAIN_DESDE, train_hasta)
     
     # Filtrar datos
-    df_train = df[df['foto_mes'].isin(meses_train)].copy()
-    df_test = df[df['foto_mes'] == test_mes].copy()
+    df_train = df[df['foto_mes'].isin(meses_train)]
+    df_test = df[df['foto_mes'] == test_mes]
     
     logger.info(f"  Train: {TRAIN_DESDE} a {train_hasta} ({len(meses_train)} meses) = {len(df_train):,} registros")
     logger.info(f"  Test: {test_mes} = {len(df_test):,} registros")

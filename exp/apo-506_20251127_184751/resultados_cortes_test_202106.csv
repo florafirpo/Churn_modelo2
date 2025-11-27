@@ -1,0 +1,4 @@
+corte,envios,archivo_kaggle,archivo_detallado,sufijo
+9000,9000,KAapo-506_9000_test_202106.csv,KAapo-506_9000_test_202106_detallado.csv,_test_202106
+10000,10000,KAapo-506_10000_test_202106.csv,KAapo-506_10000_test_202106_detallado.csv,_test_202106
+11000,11000,KAapo-506_11000_test_202106.csv,KAapo-506_11000_test_202106_detallado.csv,_test_202106

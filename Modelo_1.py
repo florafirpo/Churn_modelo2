@@ -82,7 +82,7 @@ TRAIN_HASTA_TEST2 = 202104
 TRAIN_HASTA_FINAL = 202106
 
 # Mes de inicio del entrenamiento (común para todos)
-TRAIN_DESDE = 201901
+TRAIN_DESDE = 202011
 
 # -----------------------------
 # Semillas
@@ -107,7 +107,7 @@ COLUMNAS_A_ELIMINAR = [
 # Undersampling
 # -----------------------------
 UNDERSAMPLING = True
-UNDERSAMPLING_RATIO = 0.05  # Proporción de clase mayoritaria a mantener
+UNDERSAMPLING_RATIO = 0.3  # Proporción de clase mayoritaria a mantener
 
 # -----------------------------
 # LightGBM - Parámetros

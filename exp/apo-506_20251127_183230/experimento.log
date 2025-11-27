@@ -1,0 +1,190 @@
+2025-11-27 18:32:30 - __main__ - INFO - Logging configurado. Guardando en: ./exp/apo-506_20251127_183230/experimento.log
+2025-11-27 18:32:30 - __main__ - INFO - ================================================================================
+2025-11-27 18:32:30 - __main__ - INFO - R_to_py MEJORADO: Workflow Completo de 3 Etapas
+2025-11-27 18:32:30 - __main__ - INFO - ================================================================================
+2025-11-27 18:32:30 - __main__ - INFO - Inicio: 2025-11-27 18:32:30
+2025-11-27 18:32:30 - __main__ - INFO - Experimento: apo-506
+2025-11-27 18:32:30 - __main__ - INFO - Ganancia por acierto: $780,000
+2025-11-27 18:32:30 - __main__ - INFO - Costo por estímulo: $20,000
+2025-11-27 18:32:30 - __main__ - INFO - Canaritos: 300 (con Polars, al principio)
+2025-11-27 18:32:30 - __main__ - INFO - Lags y Deltas: True (órdenes: [1, 2])
+2025-11-27 18:32:30 - __main__ - INFO - Undersampling: True (ratio=0.05)
+2025-11-27 18:32:30 - __main__ - INFO - 
+2025-11-27 18:32:30 - __main__ - INFO - Configuración guardada en: ./exp/apo-506_20251127_183230/configuracion.json
+2025-11-27 18:32:30 - __main__ - INFO - Configuración guardada en: ./exp/apo-506_20251127_183230/configuracion.json
+2025-11-27 18:32:30 - __main__ - INFO - 
+2025-11-27 18:32:30 - __main__ - INFO - ================================================================================
+2025-11-27 18:32:30 - __main__ - INFO - PASO 1: Carga y preprocesamiento
+2025-11-27 18:32:30 - __main__ - INFO - ================================================================================
+2025-11-27 18:32:30 - __main__ - INFO - Cargando dataset desde ~/datasets/competencia_02_crudo.csv.gz...
+2025-11-27 18:34:16 - __main__ - INFO - Dataset cargado: (4717958, 154)
+2025-11-27 18:34:16 - __main__ - INFO - Calculando clase_ternaria...
+2025-11-27 18:34:30 - __main__ - INFO - Distribución de clases por periodo:
+2025-11-27 18:34:31 - __main__ - INFO -   201901: BAJA+1 = 645
+2025-11-27 18:34:31 - __main__ - INFO -   201901: BAJA+2 = 729
+2025-11-27 18:34:31 - __main__ - INFO -   201901: CONTINUA = 122899
+2025-11-27 18:34:31 - __main__ - INFO -   201902: BAJA+1 = 733
+2025-11-27 18:34:31 - __main__ - INFO -   201902: BAJA+2 = 707
+2025-11-27 18:34:31 - __main__ - INFO -   201902: CONTINUA = 123961
+2025-11-27 18:34:31 - __main__ - INFO -   201903: BAJA+1 = 708
+2025-11-27 18:34:31 - __main__ - INFO -   201903: BAJA+2 = 751
+2025-11-27 18:34:31 - __main__ - INFO -   201903: CONTINUA = 124508
+2025-11-27 18:34:31 - __main__ - INFO -   201904: BAJA+1 = 756
+2025-11-27 18:34:31 - __main__ - INFO -   201904: BAJA+2 = 514
+2025-11-27 18:34:31 - __main__ - INFO -   201904: CONTINUA = 125268
+2025-11-27 18:34:31 - __main__ - INFO -   201905: BAJA+1 = 517
+2025-11-27 18:34:31 - __main__ - INFO -   201905: BAJA+2 = 692
+2025-11-27 18:34:31 - __main__ - INFO -   201905: CONTINUA = 125993
+2025-11-27 18:34:31 - __main__ - INFO -   201906: BAJA+1 = 696
+2025-11-27 18:34:31 - __main__ - INFO -   201906: BAJA+2 = 608
+2025-11-27 18:34:31 - __main__ - INFO -   201906: CONTINUA = 127430
+2025-11-27 18:34:31 - __main__ - INFO -   201907: BAJA+1 = 611
+2025-11-27 18:34:31 - __main__ - INFO -   201907: BAJA+2 = 680
+2025-11-27 18:34:31 - __main__ - INFO - Agregando 300 canaritos con Polars (AL PRINCIPIO)...
+2025-11-27 18:35:13 - __main__ - INFO -   ✓ 300 canaritos agregados al principio
+2025-11-27 18:35:13 - __main__ - INFO -   ✓ Primeras columnas: ['canarito_1', 'canarito_2', 'canarito_3', 'canarito_4', 'canarito_5', 'canarito_6', 'canarito_7', 'canarito_8', 'canarito_9', 'canarito_10']
+2025-11-27 18:35:13 - __main__ - INFO - Agregando lags y deltas (órdenes: [1, 2])...
+2025-11-27 18:35:25 - __main__ - INFO -   Columnas lagueables: 152
+2025-11-27 18:35:25 - __main__ - INFO -   Órdenes de lag: [1, 2]
+2025-11-27 18:35:25 - __main__ - INFO -   Creando lags de orden 1...
+2025-11-27 18:35:49 - __main__ - INFO -   Creando lags de orden 2...
+2025-11-27 18:36:15 - __main__ - INFO -   Creando deltas...
+2025-11-27 18:36:25 - __main__ - INFO -   ✓ Features creados: 608 (304 lags + 304 deltas)
+2025-11-27 18:36:25 - __main__ - INFO -   ✓ Duración: 0:01:12.246710
+2025-11-27 18:36:25 - __main__ - INFO -   ✓ Shape final: (4717958, 1063)
+2025-11-27 18:36:26 - __main__ - INFO - ================================================================================
+2025-11-27 18:36:26 - __main__ - INFO - PASO 2: Preparación de datos (3 etapas)
+2025-11-27 18:36:26 - __main__ - INFO - ================================================================================
+2025-11-27 18:36:26 - __main__ - INFO - Train: 202001 a 202102
+2025-11-27 18:36:26 - __main__ - INFO - Test: 202104 y 202106
+2025-11-27 18:36:26 - __main__ - INFO - Final: 202108
+2025-11-27 18:36:26 - __main__ - INFO - Preparando datos para workflow de 3 etapas...
+2025-11-27 18:36:26 - __main__ - INFO - Meses de entrenamiento: 202001 a 202102 (14 meses)
+2025-11-27 18:38:50 - __main__ - INFO - Train: 2,165,514 registros (14 meses)
+2025-11-27 18:38:50 - __main__ - INFO - Test 1 (202104): 163,418 registros
+2025-11-27 18:38:50 - __main__ - INFO - Test 2 (202106): 164,313 registros
+2025-11-27 18:38:50 - __main__ - INFO - Final (202108): 164,822 registros
+2025-11-27 18:38:50 - __main__ - INFO - Aplicando undersampling (ratio=0.05)...
+2025-11-27 18:38:59 - __main__ - INFO -   Antes - CONTINUA: 2,150,070, BAJA+1: 7,542, BAJA+2: 7,902
+2025-11-27 18:39:02 - __main__ - INFO -   Después - CONTINUA: 107,503, BAJA+1: 7,542, BAJA+2: 7,902
+2025-11-27 18:39:02 - __main__ - INFO -   Total registros: 2,165,514 -> 122,947
+2025-11-27 18:39:03 - __main__ - INFO - Features: 1060
+2025-11-27 18:39:03 - __main__ - INFO - ================================================================================
+2025-11-27 18:39:03 - __main__ - INFO - ETAPA 2: TESTING (202104 y 202106)
+2025-11-27 18:39:03 - __main__ - INFO - ================================================================================
+2025-11-27 18:39:04 - __main__ - INFO - Train - Registros: 122,947, BAJA+2: 7,902 (6.43%)
+2025-11-27 18:39:04 - __main__ - INFO - Test 1 - Registros: 163,418, BAJA+2: 1,130 (0.69%)
+2025-11-27 18:39:04 - __main__ - INFO - Test 2 - Registros: 164,313, BAJA+2: 1,134 (0.69%)
+2025-11-27 18:39:04 - __main__ - INFO -   Entrenando con semilla 1/1 (seed=622358628)...
+2025-11-27 18:40:06 - __main__ - INFO - 
+Generando submissions para meses de testing...
+2025-11-27 18:40:06 - __main__ - INFO - 
+Generando submissions para 202104...
+2025-11-27 18:40:06 - __main__ - INFO - Generando 3 submissions para mes 202104...
+2025-11-27 18:40:07 - __main__ - INFO -   Corte 9000: 9000 envíos
+2025-11-27 18:40:07 - __main__ - INFO -     → KAapo-506_9000_test_202104.csv (Kaggle)
+2025-11-27 18:40:07 - __main__ - INFO -     → KAapo-506_9000_test_202104_detallado.csv (Detallado)
+2025-11-27 18:40:07 - __main__ - INFO -   Corte 10000: 10000 envíos
+2025-11-27 18:40:07 - __main__ - INFO -     → KAapo-506_10000_test_202104.csv (Kaggle)
+2025-11-27 18:40:07 - __main__ - INFO -     → KAapo-506_10000_test_202104_detallado.csv (Detallado)
+2025-11-27 18:40:08 - __main__ - INFO - 
+Archivos generados:
+2025-11-27 18:40:08 - __main__ - INFO -   ✓ 3 submissions Kaggle (simples) en: ./exp/apo-506_20251127_183230/kaggle
+2025-11-27 18:40:08 - __main__ - INFO -   ✓ 3 archivos detallados en: ./exp/apo-506_20251127_183230/kaggle
+2025-11-27 18:40:08 - __main__ - INFO -   ✓ resultados_cortes_test_202104.csv
+2025-11-27 18:40:08 - __main__ - INFO - 
+Generando submissions para 202106...
+2025-11-27 18:40:08 - __main__ - INFO - Generando 3 submissions para mes 202106...
+2025-11-27 18:40:09 - __main__ - INFO -   Corte 9000: 9000 envíos
+2025-11-27 18:40:09 - __main__ - INFO -     → KAapo-506_9000_test_202106.csv (Kaggle)
+2025-11-27 18:40:09 - __main__ - INFO -     → KAapo-506_9000_test_202106_detallado.csv (Detallado)
+2025-11-27 18:40:10 - __main__ - INFO -   Corte 10000: 10000 envíos
+2025-11-27 18:40:10 - __main__ - INFO -     → KAapo-506_10000_test_202106.csv (Kaggle)
+2025-11-27 18:40:10 - __main__ - INFO -     → KAapo-506_10000_test_202106_detallado.csv (Detallado)
+2025-11-27 18:40:11 - __main__ - INFO - 
+Archivos generados:
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ 3 submissions Kaggle (simples) en: ./exp/apo-506_20251127_183230/kaggle
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ 3 archivos detallados en: ./exp/apo-506_20251127_183230/kaggle
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ resultados_cortes_test_202106.csv
+2025-11-27 18:40:11 - __main__ - INFO - 
+🎯 Mejor corte: 9000
+2025-11-27 18:40:11 - __main__ - INFO -    Ganancia Test 1: $352,000,000
+2025-11-27 18:40:11 - __main__ - INFO -    Ganancia Test 2: $361,040,000
+2025-11-27 18:40:11 - __main__ - INFO -    Ganancia Promedio: $356,520,000
+2025-11-27 18:40:11 - __main__ - INFO - 
+Guardando resultados de testing...
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ evaluacion_testing.csv
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ matriz_test1.csv
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ matriz_test2.csv
+2025-11-27 18:40:11 - __main__ - INFO -   ✓ predicciones_test1_detallado.csv (163,418 registros)
+2025-11-27 18:40:12 - __main__ - INFO -   ✓ predicciones_test2_detallado.csv (164,313 registros)
+2025-11-27 18:40:12 - __main__ - INFO - ================================================================================
+2025-11-27 18:40:12 - __main__ - INFO - ETAPA 3: PREDICCIÓN FINAL (202108)
+2025-11-27 18:40:12 - __main__ - INFO - ================================================================================
+2025-11-27 18:40:13 - __main__ - INFO - Train: 122,947 registros
+2025-11-27 18:40:13 - __main__ - INFO - Final (202108): 164,822 registros
+2025-11-27 18:40:13 - __main__ - INFO - Entrenando con 1 semillas (ENSAMBLE)...
+2025-11-27 18:40:13 - __main__ - INFO -   Entrenando modelo 1/1 (seed=622358628)...
+2025-11-27 18:41:12 - __main__ - INFO - 
+Predicciones generadas: 164,822
+2025-11-27 18:41:12 - __main__ - INFO - Top 10 probabilidades: [0.61888781 0.60044616 0.60018675 0.59967916 0.59745187 0.59449428
+ 0.5941331  0.59355875 0.59341737 0.59213538]
+2025-11-27 18:41:12 - __main__ - INFO - 
+Guardando predicciones finales...
+2025-11-27 18:41:13 - __main__ - INFO -   ✓ predicciones_final_detallado_202108.csv (164,822 registros)
+2025-11-27 18:41:13 - __main__ - INFO - ================================================================================
+2025-11-27 18:41:13 - __main__ - INFO - PASO 5: Generación de submissions para mes FINAL
+2025-11-27 18:41:13 - __main__ - INFO - ================================================================================
+2025-11-27 18:41:13 - __main__ - INFO - Generando 3 submissions para mes 202108...
+2025-11-27 18:41:14 - __main__ - INFO -   Corte 9000: 9000 envíos
+2025-11-27 18:41:14 - __main__ - INFO -     → KAapo-506_9000_final_202108.csv (Kaggle)
+2025-11-27 18:41:14 - __main__ - INFO -     → KAapo-506_9000_final_202108_detallado.csv (Detallado)
+2025-11-27 18:41:14 - __main__ - INFO -   Corte 10000: 10000 envíos
+2025-11-27 18:41:14 - __main__ - INFO -     → KAapo-506_10000_final_202108.csv (Kaggle)
+2025-11-27 18:41:14 - __main__ - INFO -     → KAapo-506_10000_final_202108_detallado.csv (Detallado)
+2025-11-27 18:41:15 - __main__ - INFO - 
+Archivos generados:
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ 3 submissions Kaggle (simples) en: ./exp/apo-506_20251127_183230/kaggle
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ 3 archivos detallados en: ./exp/apo-506_20251127_183230/kaggle
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ resultados_cortes_final_202108.csv
+2025-11-27 18:41:15 - __main__ - INFO - ================================================================================
+2025-11-27 18:41:15 - __main__ - INFO - RESUMEN DE ARCHIVOS GENERADOS
+2025-11-27 18:41:15 - __main__ - INFO - ================================================================================
+2025-11-27 18:41:15 - __main__ - INFO - 
+📁 Directorio: ./exp/apo-506_20251127_183230
+
+2025-11-27 18:41:15 - __main__ - INFO - 📄 Configuración y Logs:
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ configuracion.json (parámetros del experimento)
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ experimento.log (log completo de ejecución)
+2025-11-27 18:41:15 - __main__ - INFO - 
+📊 Testing:
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ evaluacion_testing.csv (mejor corte: 9000)
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ matriz_test1.csv
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ matriz_test2.csv
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ predicciones_test1_detallado.csv (163,418 registros)
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ predicciones_test2_detallado.csv (164,313 registros)
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ resultados_cortes_test_202104.csv
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ resultados_cortes_test_202106.csv
+2025-11-27 18:41:15 - __main__ - INFO - 
+🎯 Final:
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ predicciones_final_detallado_202108.csv (164,822 registros)
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ resultados_cortes_final_202108.csv
+2025-11-27 18:41:15 - __main__ - INFO - 
+📤 Submissions (por mes):
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ kaggle/ - Mes 202104: 3 archivos Kaggle + 3 detallados
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ kaggle/ - Mes 202106: 3 archivos Kaggle + 3 detallados
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ kaggle/ - Mes 202108: 3 archivos Kaggle + 3 detallados
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ Total: 18 archivos (9 Kaggle + 9 detallados)
+2025-11-27 18:41:15 - __main__ - INFO - 
+🔧 Modelos:
+2025-11-27 18:41:15 - __main__ - INFO -   ✓ modelos/ (2 modelos individuales guardados)
+2025-11-27 18:41:15 - __main__ - INFO - 
+================================================================================
+2025-11-27 18:41:15 - __main__ - INFO - WORKFLOW COMPLETADO EXITOSAMENTE!
+2025-11-27 18:41:15 - __main__ - INFO - ================================================================================
+2025-11-27 18:41:15 - __main__ - INFO - Mejor corte sugerido (testing): 9000
+2025-11-27 18:41:15 - __main__ - INFO - Inicio: 2025-11-27 18:32:30
+2025-11-27 18:41:15 - __main__ - INFO - Fin: 2025-11-27 18:41:15
+2025-11-27 18:41:15 - __main__ - INFO - Duración: 0:08:45.074559
+2025-11-27 18:41:15 - __main__ - INFO - Log guardado en: ./exp/apo-506_20251127_183230/experimento.log
+2025-11-27 18:41:15 - __main__ - INFO - ================================================================================

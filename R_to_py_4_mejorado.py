@@ -60,7 +60,7 @@ DATASET_PATH = "~/datasets/competencia_02_crudo.csv.gz"
 # Periodos (Estructura de 3 etapas)
 # -----------------------------
 # TRAIN: Todos los meses desde 201901 hasta 202102
-FOTO_MES_TRAIN_INICIO = 202001
+FOTO_MES_TRAIN_INICIO = 201901
 FOTO_MES_TRAIN_FIN = 202102
 
 # TEST: Dos meses de validación
@@ -79,7 +79,7 @@ SEMILLAS_FINAL = 1          # Para predicción final (1 semilla, sin ensamble)
 # -----------------------------
 # Feature Engineering
 # -----------------------------
-QCANARITOS = 300  # Cantidad de variables aleatorias (canaritos) - dejar en 5
+QCANARITOS = 50  # Cantidad de variables aleatorias (canaritos) - dejar en 5
 
 # Lags y Deltas
 FEATURE_ENGINEERING_LAGS = True  # Activar/desactivar lags y deltas
